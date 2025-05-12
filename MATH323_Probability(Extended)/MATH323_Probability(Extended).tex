@@ -883,6 +883,7 @@ The CDF of the exponential distribution is given by
     0 & \text{for } x \leq 0
 \end{cases} \]
 
+\section{Transforms and transformations}
 \subsection{Moment generating functions}
 \begin{Definition}
     The moment-generating function (MGF) of the (distribution of the) random variable X is
@@ -900,7 +901,34 @@ The CDF of the exponential distribution is given by
     M_X(t) = E[e^{tX}] = \int_{-\infty}^{\infty} e^{tx} f_X(x) dx
 \end{equation}
 
-The PDF (or PMF) of a random variable X can be obtained from its moment generating function and vice versa.
+Moments can be computed from the moment-generating function.
+\begin{Theorem}
+    When the moment generating function \( M(t) \) of a random
+    variable \( X \) is finite in an interval around the origin, the moments of \( X \)
+    are given by
+    \[E(X^n) = M^{(n)}(0).\]
+\end{Theorem}
+
+Also, the PDF (or PMF) of a random variable X can be obtained from its moment generating function and vice versa.
+
+\subsection{Equality in distribution / having the same law}
+\begin{Definition}[Equality in distribution]
+    Two random variables \( X \) and \( Y \) are said to be equal in distribution, denoted by
+    \( X \stackrel{d}{=} Y \), if \( P(X \in B) = P(Y \in B) \) for all (Borel) subsets \( B \) of \( \mathbb{R} \).
+\end{Definition}
+
+
+\subsection{From MGF to distributions}
+\begin{Theorem}
+    Let \( X \) and \( Y \) be two random variables with moment generating 
+    functions \( M_X(t)= E(e^{tX}) \) and \( M_Y(t)= E(e^{tY}) \). Suppose there exists
+    \( \delta > 0 \) such that for all \( t \in (-\delta, \delta) \)
+    \( M_X(t) = M_Y(t) \) and these are finite numbers. Then \( X \) and \( Y \) have the same distribution.
+\end{Theorem}
+
+\subsection{Distributions of functions of random variables}
+
+
 
 \section{Multivariate probability distributions}
 A multivariate probability distribution describes the joint behavior or two or more random variables.

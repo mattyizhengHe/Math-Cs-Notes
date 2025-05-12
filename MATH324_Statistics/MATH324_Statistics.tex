@@ -114,6 +114,8 @@
 % set up pdf bookmark depth
 \hypersetup{bookmarksdepth=3}
 
+% newcommand
+\newcommand{\indep}{\perp \!\!\! \perp}
 % ------------------------------------------------------------
 \title{MATH324: Statistics}
 \author[Matthew He]{Matthew He}
@@ -153,6 +155,12 @@ that is intended to enclose the parameter of interest; thus, it is called an \te
     measurements contained in a sample.
 \end{Definition}
 
+We often want to study the estimation error \( \varepsilon = |\hat{\tau} - \tau \) or 
+a function of it, where \( \hat{\tau} \) is the estimate and \( \tau \) is the target parameter.
+The first thing that comes to mind is \( P(\varepsilon \geq \delta) \) for a 
+pre-specified \( \delta > 0 \) or \( E(\varepsilon) \). A well-known
+toll for studying the latter is the \textit{Tchbyshev's inequality}.
+
 \subsection{Inequalities}
 \begin{Definition}[Markov's Inequality]
     Let X be a random variable and \( h \) be a \textbf{non-negative} function; i.e. \( h:\mathbb{R}\mapsto \mathbb{R} \cup \left\{0\right\}
@@ -161,18 +169,64 @@ that is intended to enclose the parameter of interest; thus, it is called an \te
         \mathbb{P}(h(x) \geq \lambda) \leq \frac{\mathbb{E}[h(x)]}{\lambda}.
     \]
 \end{Definition}
+\textit{Proof.} Suppose X is a continuous random variable:
+\begin{align}
+    E[h(X)] & = \int_{-\infty}^{\infty} h(x) f_X(x) dx \\
+    &= \int_{h(x) \geq \lambda} h(x) f_X(x) dx + \int_{h(x) < \lambda} h(x) f_X(x) dx \\
+    & \geq \int_{h(x) \geq \lambda} h(x) f_X(x) dx + 0 \quad \text{(since \( h(x) \geq 0 \))} \\
+    & \geq \lambda \int_{h(x) \geq \lambda} f_X(x) dx = \lambda P(h(X) \geq \lambda) \\
+    & \Rightarrow P(h(X) \geq \lambda) \leq \frac{E[h(X)]}{\lambda}
+\end{align}
+The proof for the discrete case is similar. \hfill \qedsymbol
 
 Then we have Tchebysheff's Inequality, which is a special case of Markov's Inequality.
 Consider \( h(x)= (x-\mu)^2 \), we have:
-
+\begin{align}
+    P(|X-\mu_X| \geq \lambda) & \leq \frac{\sigma_X^2}{\lambda^2} \quad \text{
+        where } \mu_X = \mathbb{E}[X] \label{eq:2}
+\end{align}
+Now consider \( \lambda = K \sigma_X \), where \(K\) is a known constant. Then:
 \begin{Definition}[Tchebysheff's Inequality]
     Let X be a random variable with finite mean \( \mu \) and finite variance \( \sigma^2 \). Then for any \( K > 0 \), we have:
     \[
         \mathbb{P}(|X - \mu| \geq K\sigma) \leq \frac{1}{K^2}.
     \]
-    
 \end{Definition}
 
+\subsection{Application of Markov's inequality}
+Consider \( X_i\sim (\mu, 1), \overline{X}_n = \frac{1}{n}\sum_{i=1}^{n}X_i \).
+We want to study 
+\( P(\varepsilon \geq \sigma) = P(| \overline{X}_n - \mu | \geq \delta) \).
+
+We first note that:
+\begin{align}
+    E(\overline{X}_n) &= E(\frac{1}{n}\sum_{i=1}^{n}X_i) = \frac{1}{n}\sum_{i=1}^{n}E(X_i) = \frac{1}{n}\sum_{i=1}^{n}\mu = \mu
+\end{align}
+Applying \eqref{eq:2} to \( \overline{X}_n\), we have:
+\begin{align}
+    P(|\overline{X}_n - \mu| \geq \delta) & \leq \frac{Var(\overline{X}_n)}{\delta^2} \\
+\end{align}
+\begin{align}
+    Var(\overline{X}_n) &= Var(\frac{1}{n}\sum_{i=1}^{n}X_i) = \frac{1}{n^2}\sum_{i=1}^{n}Var(X_i)\\
+    &= \frac{1}{n^2}\left[
+        \sum_{i=1}^{n}Var(X_i) + 2\sum\sum_{1 \leq i < j \leq n}Cov(X_i, X_j)
+    \right]\\
+    &= \frac{1}{n^2}\left[
+        \sum_{i=1}^{n}Var(X_i) + 0
+    \right] \quad \text{since } \indep_{i=1}^{n} X_i \\
+    &= \frac{1}{n^2}\left[
+        nVar(X_i)
+   \right]\\ 
+   &= \frac{1}{n} Var(X_i) = \frac{\sigma^2_X}{n} = \frac{1}{n}
+    \intertext{Therefore, we have:}
+    P(|\overline{X}_n - \mu| \geq \delta) & \leq \frac{1}{n\delta^2}
+    \label{eq:3}
+\end{align}
+Using \eqref{eq:3}, given the sample size \( n \), we can find an upper bound for the proportion of deviations which are greater 
+than a given threshold \( \delta \). In turn, given the desired threshold
+\( \delta \), and we want \( P(|\overline{X}_n - \mu| \geq \delta) \leq \beta\)
+where \( \beta \) is also given. We set \( \frac{1}{n\delta^2} = \beta \) and 
+then estimate \( n \approx \frac{1}{\beta \delta^2} \).
 % end of main text
 
 \makeatletter
