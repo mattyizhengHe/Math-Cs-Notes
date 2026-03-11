@@ -10,11 +10,11 @@ For storing and sharing the notes, definitely one of my most favorite places, ju
   (Abstract linear algebra)
 - **MATH323: Probability (Fall 2024)**
   (I extended the notes, so it goes beyond the course content quite a bit. I like it better now, as a formal introduction to probability.)
-- **MATH324: Statistics** (Winter 2025)
-- **MATH547: Stochastic Processes** (Winter 2025)
-- **NEUR503: Computational Neuroscience** (Winter 2025)
+- **MATH324: Statistics (Winter 2025)**
+- **MATH547: Stochastic Processes (Winter 2025)**
+- **NEUR503: Computational Neuroscience (Winter 2025) **
 ## Computer Science
-- **COMP250: Introduction to Computer Science** (Fall 2024)
+- **COMP250: Introduction to Computer Science (Fall 2024) **
   (Notes for midterms prep.)
-
+- **COMP252: Honours Algorithms and Data Structures (Winter 2025) **
 

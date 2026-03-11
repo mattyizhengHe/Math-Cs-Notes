@@ -1,0 +1,957 @@
+\documentclass{tufte-handout}
+
+%\geometry{showframe}
+%\geometry{showframe}% for debugging purposes -- displays the margins
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{cleveref}
+\crefname{Proposition}{Proposition}{Propositions}
+\Crefname{Proposition}{Proposition}{Propositions}
+\crefname{Theorem}{Theorem}{Theorems}
+\Crefname{Theorem}{Theorem}{Theorems}
+\crefname{Definition}{Definition}{Definitions}
+\Crefname{Definition}{Definition}{Definitions}
+\crefname{Corollary}{Corollary}{Corollaries}
+\Crefname{Corollary}{Corollary}{Corollaries}
+\crefname{Lemma}{Lemma}{Lemmas}
+\Crefname{Lemma}{Lemma}{Lemmas}
+\crefname{Example}{Example}{Examples}
+\Crefname{Example}{Example}{Examples}
+\usepackage{amsthm}
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+% The following package makes prettier tables.  We're all about the bling!
+\usepackage{booktabs}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments.  We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Small sections of multiple columns
+\usepackage{multicol}
+
+% Provides paragraphs of dummy text
+\usepackage{lipsum}
+
+% Defines colors
+\usepackage{xcolor}
+\definecolor{blue}{cmyk}{0.63, 0.37, 0, 0.57}     
+\definecolor{ltblue}{RGB}{78,150,179}
+
+% These commands are used to pretty-print LaTeX commands
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+
+% Package for title style
+\usepackage{sectsty}
+\usepackage[utf8]{inputenc}
+
+% Sets section number style
+\setcounter{secnumdepth}{3} % uncomment this, if desired
+\renewcommand\thesection{\color{white}\arabic{section}}
+
+% Sets title style
+\makeatletter
+  \renewcommand{\paragraph}{\@startsection{paragraph}%
+    {4}{\z@}{-1ex \@plus -1ex \@minus -.3ex}%
+    {0.5ex \@plus .2ex}{\normalfont\normalsize\bfseries}}
+\makeatother
+
+\makeatletter
+  \renewcommand{\subsection}{\@startsection{subsection}%
+    {3}{-1.8em}{-3ex \@plus -1ex \@minus -.2ex}%
+    {1.5ex \@plus .2ex}
+    {\hspace*{-5.5em}\fcolorbox{ltblue}{ltblue}{\parbox[c][1.0ex][b]{4em}{\phantom{space}}}
+    \normalfont\large\itshape\color{ltblue}}}
+\makeatother
+
+\makeatletter
+  \renewcommand{\section}{\@startsection{section}%
+    {3}{-1.01em}{-3ex \@plus -1ex \@minus -.2ex}%
+    {1.5ex \@plus .2ex}
+    {\hspace*{-5.5em}\fcolorbox{blue}{blue}{\parbox[c][1.0ex][b]{4em}{\phantom{space}}}
+    \normalfont\Large\itshape\color{blue}}}
+\makeatother
+
+% Sets theorem style
+\usepackage{thmtools}
+\usepackage{transparent}
+\definecolor{theb}{rgb}{0.67, 0.80, 0.91}
+
+\declaretheorem[shaded={bgcolor=Lavender,
+    textwidth=30em}]{Definition} % Colorbox-styled Theorem 
+\declaretheorem[shaded={bgcolor=Thistle,
+    textwidth=30em}]{Theorem} % Colorbox-styled Theorem 
+\declaretheorem[shaded={bgcolor=Thistle,
+    textwidth=30em}]{Corollary} % Colorbox-styled Theorem
+\declaretheorem[shaded={bgcolor=PeachPuff,
+    textwidth=30em}]{Proposition} % Colorbox-styled Proposition
+\declaretheorem[shaded={bgcolor=Thistle,
+    textwidth=30em}]{Lemma} % Colorbox-styled Lemma
+\declaretheorem[shaded={rulecolor=Lavender,
+    rulewidth=2pt, bgcolor={rgb}{1,1,1}}]{Example-1} % Colorbounded-styled Theorem
+\declaretheorem[thmbox=L]{boxtheorem L} % Theorem box L-size
+\declaretheorem[thmbox=M]{Example} % Theorem box M-size
+\declaretheorem[thmbox=S]{Formula} % Theorem box S-size
+\declaretheorem[thmbox=S]{Statement} % Theorem box S-size
+
+% set up pdf bookmark depth
+\hypersetup{bookmarksdepth=3}
+
+% ------------------------------------------------------------
+\title{MATH563: Convex Optimization}
+\author[Matthew He]{Matthew He}
+  % if the \date{} command is left out, the current date will be used
+% Beginning of the document
+\begin{document}
+\maketitle% this prints the handout title, author, and date
+
+% abstract
+\begin{abstract}
+\noindent Abstract
+\end{abstract}
+
+% main text
+\section{Preliminaries}
+\begin{Definition}[Affine set]
+    A set \( C \subseteq \mathbb{E} \) is called an
+    affine set if for all \( x, y \in C \) and \( \lambda,\mu \in \mathbb{R} \), we have
+    \begin{align}
+    \lambda x + \mu y \in C.
+    \end{align}
+\end{Definition}
+
+\begin{Definition}[Affine hull]
+    The affine hull of a set \( Q \subseteq \mathbb{E} \)
+    denoteded by \( \text{aff}(Q) \), is the intersection of all affine sets that 
+    contain \( Q \). 
+\end{Definition}
+Affine hull is the smallest affine set that contains \( Q \).
+
+\begin{Definition}[Relative interior and boundary]
+    The relative interior of a set \( Q \subseteq \mathbb{E} \),
+    denoted by \( \text{ri}(Q) \), is the interior of \( Q \) relative to its affine hull, i.e.
+    \begin{align}
+    \text{ri}(Q) = \{ x \in Q : \exists \delta > 0, B(x, \delta) \cap \text{aff}(Q) \subseteq Q \}.
+    \end{align}
+    The relative boundary of \( Q \) is defined as \( \text{rb}(Q) = \text{cl}(Q) \setminus \text{ri}(Q) \).
+\end{Definition}
+\marginnote{Relative interior is weaker than interior since it's easier to be satisfied, 
+as \( B_\varepsilon \cap \text{aff} Q \subset B_{\varepsilon} \).
+We have \( \text{int}(Q) \subseteq \text{ri}(Q) \) and \( \text{rb}(Q) \subseteq \text{bd}(Q) \).}
+
+% \subsection{Differentiation in Euclidean space}
+% \begin{Definition}[Second derivative]
+%     If ll√
+% \end{Definition}
+\begin{Definition}[Epigraph]
+    The epigraph of a function \( f:\mathbb{E}\to \overline{\mathbb{R}} \) is the set
+    \begin{align}
+    \text{epi}(f) = \{ (x, \alpha) \in \mathbb{E} \times \mathbb{R} : f(x) \leq \alpha \}.
+    \end{align}
+\end{Definition}
+\subsection{Lower semicontinuity}
+\begin{Definition}[Lower limit]
+    For \(f: \mathbb{E}\to \mathbb{R}\), and \( \bar x \in \mathbb{E} \), 
+    we define \begin{align}
+        \liminf_{x\to \bar x} f(x) &= \sup_{\delta > 0} \inf_{x \in B(\bar x, \delta)} f(x)\\
+        &= \inf\{\alpha \in \overline{\mathbb{R}} : \exists x^k \to x \text{ s.t. }
+        f(x^k) \to \alpha 
+        \}.
+    \end{align}
+    as the lower limit of \( f \) at \( \bar x \).
+\end{Definition}
+
+\begin{Definition}[Continuity notions]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \) 
+    and \( \bar x \in \mathbb{E} \), then \( f \) is 
+    said to be lower semicontinuous at \( \bar x \) if \( f(\bar x) \leq \liminf_{x\to \bar x} f(x) \).
+\end{Definition}
+Alternatively, \( f \) is lsc at \( \bar x \) iff there does not exists 
+a sequence \( \{x^k\} \to \bar x \) such that \( f(x^k) < f(\bar x) \).
+
+\begin{Definition}[Closure of function]
+    For \( f:\mathbb{E}\to \overline{\mathbb{R}} \),
+    the closure of \( f \) is the function \( \text{cl} f:\mathbb{E}\to \overline{\mathbb{R}} \) defined by
+    \begin{align}
+    \text{cl} f(\bar x) = \liminf_{x\to \bar x} f(x).
+    \end{align}
+\end{Definition}
+As \( \liminf_{x\to \bar x} f(x) \leq f(\bar x) 
+ \), we always have \( \text{cl} f \leq f \).
+ We also have \(\text{epi}(\text{cl} f) = \text{cl}(\text{epi} f)\).
+ That said, epigraph and closure commute with each other.
+
+ \begin{Proposition}[Characterization of lsc]
+     Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \). Then TFAE:
+     \begin{enumerate}
+         \item \( f \) is lsc on \( \mathbb{E} \)
+         \item \( \text{epi}(f) \) is closed
+         \item \( \text{lev}_{\leq\alpha} f \) is closed for all \( \alpha \in \mathbb{R} \)
+     \end{enumerate}
+ \end{Proposition}
+
+\begin{Corollary}[lsc of indicator function]
+    Let \( C \subseteq \mathbb{E} \), its indicator function \( \delta_C \) is 
+    proper, lsc iff \( C \) is nonempty and closed.
+\end{Corollary}
+
+ \subsection{Optimization problems}
+ We always have 
+ \begin{align}
+    \inf_C f = - \sup_C (-f), \; \sup_C f = - \inf_C (-f).
+ \end{align}
+
+\begin{Definition}[Minimizer]
+    Let \( f:\mathbb{E}\to \mathbb{R}\cup\{\infty\} \) and \( C \subseteq \mathbb{E} \).
+    Then \( \bar x \in C \cap \text{dom}(f) \) is called 
+    \begin{enumerate}
+        \item local minimizer of \( f \) over \( C \) if 
+        \begin{align}
+            \exists \varepsilon > 0: f(\bar x) \leq f(x), \forall x \in C \cap B(\bar x, \varepsilon).
+        \end{align}
+        \item global minimizer of \( f \) over \( C \) if
+        \begin{align}
+            f(\bar x) \leq f(x), \forall x \in C.
+        \end{align}
+    \end{enumerate}
+\end{Definition}
+
+When minimizing a proper function \( f: \mathbb{E}\to \mathbb{R} \cup \{\infty\}\),
+we have:
+\begin{align}
+    \arg\min_\mathbb{E} f \neq \emptyset \implies \inf_\mathbb{E} f \in \mathbb{R}.
+\end{align}
+but not the reverse.
+
+\begin{Theorem}[Existence of minima]
+    \label{thm:exi_min}
+    Let \( f:\mathbb{E}\to \mathbb{R}\cup\{\infty\} \) be proper, 
+    lsc, and level bounded. Then \( \arg\min f \neq \emptyset \)
+    and \( \min f = \inf f \in \mathbb{R} \).
+\end{Theorem}
+
+\clearpage
+\section{Convex Sets}
+\begin{Definition}[Convex sets]
+    A set \( C \subseteq \mathbb{E} \) is called convex if for all \( x, y \in C \) and \( \lambda \in [0, 1] \), we have
+    \begin{align}
+    \lambda x + (1-\lambda) y \in C.
+    \end{align}
+\end{Definition}
+Example of convex sets includes:
+subspace of \( \mathbb{E} \), Minkowski sum of convex sets, hyperplanes, 
+affine sets, intersection of convex sets, linear image and 
+preimage of convex sets, half spaces, interval (closed, open, half-open).
+
+\subsection{Projection on convex sets}
+\begin{Definition}[Projection on a set]
+    let \( S\subset \mathbb{E} \) be nonempty and 
+    \( x\in \mathbb{E} \), then we define the projection 
+    of \( x \) on \( S \) by
+    \begin{align}
+        P_S(x) = \arg\min_{y\in S} \|x-y\| \subset S
+    \end{align}
+\end{Definition}
+
+Now we give sufficient conditions for this subset to be nonempty and unique.
+\begin{Lemma}
+    Let \( x \in \mathbb{E} \) and \( S \subseteq \mathbb{E} \) be
+    nonempty. Then the following hold:
+    \begin{enumerate}
+        \item If \( S \) is closed, then \(P_S(x) \neq \emptyset \).
+        \item If \( S \) is convex, then \( P_S(x) \) has at most one element.
+    \end{enumerate}
+\end{Lemma}
+
+\begin{Corollary}[Projection on closed, convex set]
+    Let \( C \subset \mathbb{E} \) be nonempty, closed, and convex. 
+    Then \( P_C(x) \) is a mapping from \( \mathbb{E} \) to \( C \)
+    with \( x=P_C(x) \) iff \( x \in C \).
+    That said, projection onto a closed convex set is unique.
+\end{Corollary}
+
+The following theorem gives an important characterization of the projection on a 
+closed convex set in terms of variational inequality.
+
+\begin{Theorem}[Projection Theorem]
+    Let \( C \subseteq \mathbb{E} \) be nonempty, closed, and convex,
+    and let \( x \in \mathbb{E} \). Then \(\bar v = P_C(x)\) iff
+    \begin{align}
+    \langle x - \bar v, v - \bar v \rangle \leq 0, \quad \forall v \in C.
+    \end{align}
+\end{Theorem}
+
+\subsection{Separation Theorem}
+\begin{Theorem}[Separation Theorem]
+    Let \( C \subset \mathbb{E}\) be nonempty, closed, and convex,
+    and let \( x\not\in C \), then there exists \( s \in \mathbb{E}\setminus \{0\}\) with 
+    \begin{align}
+        \langle s, x \rangle > \sup_{v \in C} \langle s, v \rangle.
+    \end{align}
+\end{Theorem}
+Substituting \(s\) with \(-s\), we obtain 
+\begin{align}
+    \langle s, x \rangle < \inf_{v \in C} \langle s, v \rangle.
+\end{align}
+
+
+To see the separation, define \( \gamma = \frac12 (\langle s,x\rangle + \sup_{y\in C}\langle s,y\rangle)\).
+Then, \( x\in \{
+    z:\langle s, z\rangle > \gamma 
+\} \) and \( C 
+\subseteq \{ z : \langle s, z\rangle < \gamma \} \),
+i.e., \(x\) and \( C \) 
+lie in two distinct half-spaces defined by the hyperplane 
+\begin{align}
+    H = \{ z : \langle s, z\rangle = \gamma \}.
+\end{align}
+
+
+\clearpage
+\section{Convex Functions}
+
+\subsection{Definition and Examples}
+
+\begin{Definition}[Convex functions]
+    A function \( f:\mathbb{E}\to \overline{\mathbb{R}} \) is called
+    convex if \(\text{epi}(f)\) is a convex set.
+\end{Definition}
+We can substitute the the epigraph with strict epigraph.
+
+Convex function also have convex level sets.
+
+Examples of convex functions: scalar-valued linear functions 
+\(\mathcal{L}(\mathbb{E}_1, \mathbb{R})\) is convex; indicator of 
+function of a convex set, any norm on \( \mathbb{E} \), the scalar functions
+\(x\mapsto x^2\), \(x \mapsto \exp(x)\).
+
+\begin{Proposition}[Domain of a convex function]
+    The domain of a convex function is convex.
+\end{Proposition}
+Using the projection linear mapping \(L: (x,\alpha) \in \mathbb{E} \times \mathbb{R} 
+\mapsto x\in \mathbb{E}\),
+we have \(\text{dom}(f) = L(\text{epi}(f))\).
+We know that linear map preserve convexity.
+
+\begin{Proposition}[Characterizing convexity]
+    A function \( f:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \) is 
+    convex iff for all \( x, y \in \mathbb{E}\) and \( \lambda \in (0, 1) \), we have
+    \begin{align}
+        f(\lambda x + (1-\lambda) y) \leq \lambda f(x) + (1-\lambda) f(y).
+        \label{eq:convexity}
+    \end{align}
+\end{Proposition}
+\marginnote{
+\begin{Corollary}
+    Let \( f:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \), then TFAE:
+    \begin{enumerate}
+        \item \( f \) is convex
+        \item \( f \) is convex on its domain
+    \end{enumerate}
+\end{Corollary}
+We note that 
+convexity on the domain is equivalent to convexity on the whole space 
+because the inequality trivially holds when \( x \) or \( y \) is outside the domain.
+}
+We can extend the above characterization.
+
+\begin{Definition}[p-dimensional simplex]
+    The p-dimensional simplex is the set
+    \begin{align}
+        \Delta_p = \{ \lambda \in \mathbb{R}^p : \lambda_i \ge 0, \sum_{i=1}^p \lambda_i = 1 \}.
+    \end{align}
+\end{Definition}
+
+\begin{Corollary}[Jensen's Inequality]
+    Let \( f:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \) be a convex function, and let \( x_1, \ldots, x_n \in \text{dom}(f) \) with \( \lambda_1, \ldots, \lambda_n \geq 0 \) such that \( \sum_{i=1}^n \lambda_i = 1 \). Then
+    \begin{align}
+        f\left(\sum_{i=1}^n \lambda_i x_i\right) \leq \sum_{i=1}^n \lambda_i f(x_i).
+    \end{align}
+\end{Corollary}
+
+\begin{Definition}[Convexity on a set]
+    A function \( f:\mathbb{E}\to \overline{\mathbb{R}} \) is convex on a nonempty convex set 
+    \( C \subseteq \text{dom}(f) \)  if 
+    the inequality \eqref{eq:convexity} holds for every \( x, y \in C \).
+\end{Definition}
+
+We mainly interest in proper convex (sometimes lsc) functions \(f: \mathbb{E}\to \mathbb{R}\cup \{\infty\} \).
+We take the following notation:
+\begin{itemize}
+    \item \( \Gamma = \Gamma(\mathbb{E}) = \{f: \mathbb{E} \to \mathbb{R} \cup \{\infty\} : f \text{ is proper and convex}\}
+    \) 
+    \item \( \Gamma_0 = \Gamma_0(\mathbb{E}) = \{f: \mathbb{E} \to \mathbb{R} \cup \{\infty\} : f \text{ is proper, convex, and lsc}\}
+    \) 
+\end{itemize}
+We then introduce stronger notions of convexity.
+\begin{Definition}[Strict/strong convexity]
+    Let \( f\in \Gamma \) and \( C \subset \text{dom}(f) \) a convex set, then \( f \) is said to be 
+    \begin{itemize}
+        \item strictly convex if for all \( x, y \in \mathbb{E} \) with \( x \neq y \) and all \( \lambda \in (0, 1) \), we have
+    \begin{align}
+        f(\lambda x + (1-\lambda) y) < \lambda f(x) + (1-\lambda) f(y).
+    \end{align}
+        \item strongly convex with parameter \( m > 0 \) if for all \( x, y \in \mathbb{E} \) and all \( \lambda \in (0, 1) \), we have
+    \begin{align}
+        f(\lambda x + (1-\lambda) y) \leq \lambda f(x) + (1-\lambda) f(y) - \frac{m}{2} \lambda (1-\lambda) \|x - y\|^2.
+    \end{align}
+    where \( m \) is called the modulus of strong convexity on \( C \)
+    \end{itemize}
+\end{Definition}
+\marginnote{Note that strong convexity implies strict convexity, but not the reverse.}
+
+\begin{Proposition}[Characterization of strong convexity]
+    Let \( f \in \Gamma \) and \( C \subset \text{dom}(f) \). Then 
+    \( f \) is strongly convex with parameter \( m > 0 \) on \( C \) iff the function \( x \mapsto f(x) - \frac{m}{2} \|x\|^2 \) is convex on \( C \).
+\end{Proposition}
+
+\subsection{Functional operations preserving convexity}
+\begin{Proposition}[Positive combinations of convex functions]
+    For \( p \in \mathbb{N} \), let \( f_1, \ldots, f_p \) be convex (and lsc) and 
+    \(\alpha_i\geq 0\) for \(i=1,\ldots, p\). 
+    Then 
+    \begin{align}
+    f = \sum_{i=1}^p \alpha_i f_i
+    \end{align}
+    is convex (and lsc).\\
+    If, in addition, \(\bigcap_{i=1}^p \text{dom}(f_i) \neq \emptyset\), then \( f \) is also proper.
+\end{Proposition}
+
+
+\begin{Proposition}[Pointwise supremum of convex functions]
+    For an aribitrary index set \( I\), let \( f_i \) be convex (lsc) for all \( i \in I \). 
+    Then the function 
+    \begin{align}
+        f(x) = \sup_{i \in I} f_i(x)\; \forall x \in \mathbb{E}
+    \end{align}
+    is convex (lsc).
+\end{Proposition}
+\marginnote{Index does not have to be finite.}
+
+\begin{Definition}[Affine functions]
+    A function \( f:\mathbb{E}_1 \to \mathbb{E}_2 \) is called affine if 
+    \begin{align}
+    f(\lambda x + (1-\lambda) y) = \lambda f(x) + (1-\lambda) f(y), \forall x, y \in \mathbb{E}_1, \lambda \in [0, 1].
+    \end{align}
+\end{Definition}
+\marginnote{If the coefficients need not sum to 1 then it's linear.
+Linear function is affine and affine function is linear if \( f(0)=0 \).
+}
+Every affine function can have a unique representation 
+\(f = L + v\) where \( L \in \mathcal{L}(\mathbb{E}_1, \mathbb{E}_2)
+\) is linear and \( v \in \mathbb{E}_2 \).
+
+\begin{Proposition}[Pre-composition of with an affine mapping]
+    Let \(H: \mathbb{E}_1 \to \mathbb{E}_2\) be affine and \(g: \mathbb{E}_2 \to \mathbb{R}\cup \{\infty\}\) 
+(lsc and ) convex. Then the function \( f = g \circ H \) is (lsc and) convex.
+\end{Proposition}
+
+This is not true in general, as the composition of two convex functions may not be convex.
+
+\clearpage
+\section{Minimization and convexity}
+In an minimization problem:
+\begin{align}
+\min_{x \in C} f(x) \iff \min_{x \in \mathbb{E}} f(x) + \delta_C(x).
+\end{align}
+If \( f \) is convex and \( C \) is convex, 
+then we call this problem a convex minimization/optimization problem.
+
+\subsection{General existence results}
+\begin{Definition}[Coercivity and supercoercivity]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \). Then \( f \) is called 
+    \begin{itemize}
+        \item coercive if \( \lim_{\|x\|\to \infty} f(x) = \infty \), which is sometimes called 0-coercive.
+        \item supercoercive if \( \lim_{\|x\|\to \infty} \frac{f(x)}{\|x\|} = \infty \), which is sometimes called 1-coercive.
+    \end{itemize}
+\end{Definition}
+
+\begin{Lemma}[Level-boundedness and coercivity]
+    A function \( f:\mathbb{E}\to \overline{\mathbb{R}} \) is coercive iff \( f \) is level-bounded.
+\end{Lemma}
+
+We now extent \Cref{thm:exi_min} to cover the problem above.
+\begin{Corollary}[Existence of minimizer]
+    Let \( f:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \) be lsc and let 
+    \( C \subseteq \mathbb{E} \) be closed such that \( \text{dom}(f) \cap C \neq \emptyset \)
+    and suppose one of the following holds:
+    \begin{enumerate}
+        \item \( f \) is coercive
+        \item \( C \) is bounded
+    \end{enumerate}
+    Then \( f \) has a minimizer on \( C \).
+\end{Corollary}
+Proof: Consider the function \( g = f + \delta_C \).
+Then it holds that \(\text{lev}_{\leq \alpha} g = \text{lev}_{\leq \alpha} f \cap C\) for all \( \alpha \in \mathbb{R} \).
+
+Hence, under either assumption, \( g \) is closed and bounded level sets.
+Hence, it is lsc and level-bounded, Then the results follows from \Cref{thm:exi_min}.
+\hfill\qedsymbol
+
+
+
+
+\clearpage
+\section{Differential Theory}
+\subsection{Subdifferential}
+\begin{Definition}[Subdifferential]
+    Let \( f:\mathbb{E}\mapsto \overline{\mathbb{R}} \), and \( \bar x \in \mathbb{E} \).
+    Then \( g\in \mathbb{E} \) is call a subgradient of \( f \) at \( \bar x \) 
+    if 
+    \begin{align}
+    f(x) \geq f(\bar x) + \langle g, x - \bar x \rangle, \quad \forall x \in \mathbb{E}.
+    \end{align}
+    The set of all subgradients of \( f \) at \( \bar x \):
+    \begin{align}
+    \partial f(\bar x) = \{ g \in \mathbb{E} : f(x) \geq f(\bar x) + \langle g, x - \bar x \rangle, \forall x \in \mathbb{E} \}
+    \end{align}
+    is called the subdifferential of \( f \) at \( \bar x \).
+\end{Definition}
+Subdifferential contains exactly the slopes of all affine minorants
+of \( f \) at \( \bar x \).
+
+\begin{Proposition}[Elementary properties of the subdifferential]
+    Let \( f:\mathbb{E}\mapsto \overline{\mathbb{R}} \). Then the following hold:
+    \begin{enumerate}
+        \item \( \partial f(\bar x) \) is closed and convex for all \( \bar x \in \text{dom}(f) \).
+        \item If \( f \) is proper, then \( \partial f(\bar x) = \emptyset \) for all \( \bar x \notin \text{dom}(f) \).
+        \item \( 0 \in \partial f(\bar x) \) iff \(\bar x \in \arg\min f\).
+        \item If \( f \) is convex, then \( \partial f(\bar x) = \{ v \in \mathbb{E} :
+        (v, -1) \in N_{\text{epi}(f)}(\bar x, f(\bar x)) \} \).
+    \end{enumerate}
+\end{Proposition}
+
+\begin{Theorem}[Subdifferential and conjugate function]
+    Let \( f:\mathbb{E}\mapsto \overline{\mathbb{R}} \). Then 
+    the following are equivalent:
+    \begin{enumerate}
+        \item \( y \in \partial f (x) \).
+        \item \( x \in \arg\min_z\{\langle z, y \rangle - f(z)\} \)
+        \item \( f(x) + f^*(y) = \langle x, y \rangle \) \textbf{[Fenchel-Young equality]}
+    \end{enumerate}
+    If \( f \in \Gamma_0\), these are also equivalent to
+    \begin{enumerate}
+        \setcounter{enumi}{3}
+        \item \( x \in \partial f^*(y) \)
+        \item \( y \in \arg\min_z\{\langle x, z \rangle - f^*(z)\} \)
+    \end{enumerate}
+    Note that (1) and (4) are equivalent to \( \partial f^* \) 
+    is an inverse of \( \partial f \).
+\end{Theorem}
+Proof: Notice that 
+\begin{align}
+    y \in \partial f(x) &\iff f(z) \geq f(x) + \langle y, z - x \rangle, \forall z \in \mathbb{E} \\
+    &\iff \langle z, y \rangle - f(z) \le \langle x, y \rangle - f(x), \forall z \in \mathbb{E} \\
+    &\iff \langle x, y \rangle - f(x) \ge \sup_z \{\langle z, y \rangle - f(z)\} = f^*(y) \\
+    \intertext{Combine with Fenchel-Young inequality \( f(x) + f^*(y) \ge \langle x, y \rangle \), we have}
+    &\iff f(x) + f^*(y) = \langle x, y \rangle
+\end{align}
+Apply the same argument to \( f^* \) and using the fact that \( f^{**} = f \) for \( f \in \Gamma_0 \), we 
+complete the proof.
+\hfill\qedsymbol
+
+\subsection{Directional Derivative of a convex function}
+\begin{Definition}[Directional derivative]
+    Let \( f:\mathbb{E}\mapsto \overline{\mathbb{R}} \) be proper, and \( \bar x \in \text{dom}(f) \). 
+    We say that \( f \) is directionally differentiable at \( \bar x \) 
+    in the direction \( d \in \mathbb{E} \)
+    if the limit
+    \begin{align}
+    f'(\bar x; d) = \lim_{t\downarrow 0} \frac{f(\bar x + td) - f(\bar x)}{t}.
+    \end{align}
+    exists in an extended real-valued sense (so it can be \( +\infty \)).
+    In this case, we call \( f'(\bar x; d) \) the directional derivative of 
+    \( f \) at \( \bar x \) in the direction \( d \).
+\end{Definition}
+\marginnote{
+Remark: if \( f \) is differentiable, then \( f'(\bar x; d) = \langle \nabla f(\bar x), d \rangle \).
+}
+
+\begin{Definition}[Positive Homogeneity]
+    We call a function \( f:\mathbb{E}\mapsto \mathbb{R}\cup \{+\infty\} \) 
+    positively homogeneous if \( f(\lambda x) = \lambda f(x) \) for all \( x \in \mathbb{E} \) and \( \lambda \ge 0 \).
+\end{Definition}
+\begin{Proposition}
+    A function \( f:\mathbb{E}\mapsto \mathbb{R}\cup \{+\infty\} \) is
+    convex and positively homogeneous if and only if
+    \begin{align}
+        h(\lambda x + \mu y) \le \lambda h(x) + \mu h(y), \quad \forall x, y \in \mathbb{E}, \lambda, \mu \ge 0.
+    \end{align}
+    a property called sublinearity. Sublinearity
+    is also equivalent to subadditivity \( h(x + y) \le h(x) + h(y) \) and positive homogeneity.
+\end{Proposition}
+That said, convexity and positive homogeneity give subadditivity:
+\begin{align}
+    f(\lambda x+ (1-\lambda) y) \le \lambda f(x) + (1-\lambda) f(y), \quad \forall x, y \in \mathbb{E}, \lambda \in [0, 1].\\
+    \intertext{Set \( \lambda = \frac{1}{2} \), we have}
+    f\left(\frac{x+y}{2}\right) \le \frac{f(x) + f(y)}{2} \implies f(x+y) \le f(x) + f(y).
+\end{align}
+\hfill \qedsymbol
+
+Observe that any positive homogeneous function has \( h(0) = 0 \) and
+any sublinear function satisfies \( -h(x) \le h(0) + h(-x) \le h(x) \).
+
+\begin{Proposition}[Directional derivative of a convex function]
+    Let \( f\in \Gamma_0 \), \( x\in \text{dom}(f) \), and \( d \in \mathbb{E} \).
+    Define:
+    \begin{align}
+        t\in \mathbb{R} \setminus \{0\} \mapsto q(t) = \frac{f(x + td) - f(x)}{t}.
+    \end{align}
+    then TFAE:
+    \begin{enumerate}
+            \item \( q(-t) \leq q(-s) \leq q(s) \leq q(t) \) for all \( 0<s<t \).
+            \item We have \( f'(x; d) = \inf_{t>0} q(t) \). In particular, \( f'(x; d) \) always exists in an extended real-valued sense.
+            \item \( \text{dom}(f') = \mathbb{R}_+(\text{dom}(f) - x) \).
+            \item If \( x \in \text{int}(\text{dom}(f)) \), then \( f'(x; \cdot) \) is finite-valued, positively homogeneous,
+            and convex, (so sublinear).
+        \end{enumerate}
+\end{Proposition}
+\marginnote{For notation: \\
+\( \mathbb{R}_+(S) := \{ \alpha s \mid s \in S, \alpha \ge 0 \} \).
+\( d \in \mathbb{R}_+(S) \iff \exists\alpha \ge 0, s \in S : d = \alpha s \).
+}
+Proof:
+(2): Since infima always exists in \( \overline{\mathbb{R}} \), \( \inf_{t>0}q(t) \)
+exists. By (1), \( q(t) \) monotonically decreasing as \( t \downarrow 0 \),
+so we have 
+\begin{align}
+    \inf_{t>0} q(t) = \lim_{t\downarrow 0} q(t) = f'(x; d).
+\end{align}
+(3): Follows from (2) we have:
+\begin{align}
+    d \in \text{dom}(f') &\iff \exists  t > 0  : \frac{f(x+td) - f(x)}{t} < \infty.\\
+    &\iff \exists  t > 0  : f(x + td) - f(x) < \infty.\\
+    &\iff \exists  t > 0  : x + td \in \text{dom}(f), \text{ since \( f(x) < \infty \) for \( x \in \text{dom}(f) \)}.\\
+    &\iff \exists  t > 0  : td \in \text{dom}(f) - x.\\
+    &\iff d \in \mathbb{R}_+(\text{dom}(f) - x).
+\end{align}
+(4): Take \( 0<s<t \). If \( x \in \text{int}(\text{dom}(f)) \),
+we can choose \( t>0 \) sufficiently small such that both \( x\pm td \in \text{int}(\text{dom}(f)) \).
+Thus \( q(t) \) and \( q(-t) \) are finite. 
+Hence \( +\infty > q(t) \geq q(s) \downarrow f'(x;d) \geq q(-t) > -\infty \).
+As \( d \in \mathbb{E} \) is arbitrary, \( f'(x; \cdot) \) is finite-valued.
+
+\( f'(x,\cdot) \) is also positively homogeneous as:
+\begin{align}
+    f'(x; \alpha d) &= \lim_{t\downarrow 0} \frac{f(x + t\alpha d) - f(x)}{t} \\
+    &= \lim_{t\downarrow 0} \alpha \frac{f(x + t\alpha d) - f(x)}{t\alpha} \\
+    &= \alpha f'(x; d).
+\end{align}
+
+Convexity of \( f'(x; \cdot) \):
+for \( t>0, d,h \in \mathbb{E} \) and \( \lambda \in (0,1) \), 
+by convexity of \( f \) we have
+\begin{align}
+    f(x + t(\lambda d + (1-\lambda) h)) -f(x) 
+    &= f(\lambda (x + td) + (1-\lambda)(x + th)) - f(x) \\
+    &\le 
+    \lambda (f(x + td) - f(x)) + (1-\lambda)(f(x + th) - f(x)).
+\end{align}
+which implies
+\begin{align}
+    f'(x; \lambda d + (1-\lambda) h) &= \lim_{t\downarrow 0} \frac{f(x + t(\lambda d + (1-\lambda) h)) - f(x)}{t} \\
+    &\le \lim_{t\downarrow 0} \lambda \frac{f(x + td) - f(x)}{t} + (1-\lambda)\frac{f(x + th) - f(x)}{t} \\
+    &= \lambda f'(x; d) + (1-\lambda) f'(x; h).
+\end{align}
+\hfill\qedsymbol
+
+\begin{Definition}[Linearity space]
+    For a sublinear function \( h:\mathbb{E}\mapsto \mathbb{R}\cup \{+\infty\} \), we call the set
+    \begin{align}
+        \text{lin}(h) = \{ d \in \mathbb{E} :- h(d) = h(-d)  \}
+    \end{align}
+    the linearity space of \( h \).
+\end{Definition}
+
+\begin{Lemma}[Linearity space of a sublinear function]
+    Let \( h:\mathbb{E}\mapsto \mathbb{R}\cup \{+\infty\} \) be sublinear. Then 
+    the following holds:
+    \begin{enumerate}
+        \item The linearity space \( \text{lin}(h) \) is a subspace on which \( h \) is linear.
+        \item For \( \bar x \in \text{int}(\text{dom}(h)) \) and \( q=h'(\bar x, \cdot) \), we have:
+        \begin{enumerate}
+            \item \(q(\lambda \bar x) = \lambda h(\bar x)\) 
+            \item \( q\leq h \)
+            \item \(\text{lin} q \supset \text{lin} h + \text{span}\{\bar x\}\)
+        \end{enumerate}
+    \end{enumerate}
+\end{Lemma}
+
+\begin{Theorem}[Subdifferential vs. directional derivative]
+    Let \( f\in \Gamma \), then the following holds:
+    \begin{enumerate}
+        \item For all \( \bar x \in \mathbb{E}\), we have 
+        \(\partial f(\bar x) = \{s \in \mathbb{E}:\langle s,d\rangle \leq f'(\bar x , d), d \in \mathbb{E}\}
+        \).
+        \item For all \( \bar x \in \text{int}(\text{dom}(f)) \), we have
+        \begin{align}
+            f'(\bar x; d) = \sup_{s \in \partial f(\bar x)} \langle s, d \rangle, \quad \forall d \in \mathbb{E}.
+        \end{align}
+    \end{enumerate}
+    In particular, \( \partial f(\bar x) \) is nonempty.
+\end{Theorem}
+\subsection{Continuity properties}
+The subdifferential operator of a closed, proper, and convex function has a closed graph.
+\begin{Corollary}[Outer semicontinuity of the subdifferential]
+    Let \( f\in \Gamma_0 \) and suppose \( \{x_k\} \to x \) and 
+    \( \{y_k \in \partial f(x_k)\} \to y \). Then \( y \in \partial f(x) \), i.e. the graph of \( \partial f \) is closed.
+\end{Corollary}
+Proof: By Fenchel-Young equality, we have \( f(x_k) + f^*(y_k) = \langle x_k, y_k \rangle \) for all \( k \). 
+On the other hand, by lsc of \( f \) and \( f^* \), we have
+\begin{align}
+    f(x) + f^*(y) \leq \liminf_{k\to\infty} f(x_k) + \liminf_{k\to\infty} f^*(y_k) \leq \liminf_{k\to\infty} (f(x_k) + f^*(y_k)) = \liminf_{k\to\infty} \langle x_k, y_k \rangle = \langle x, y \rangle.
+\end{align}
+\( f(x) + f^*(y) \leq \langle x,y\rangle \). Together with Fenchel-Young inequality \( f(x) + f^*(y) \geq \langle x, y \rangle \), we have \( f(x) + f^*(y) = \langle x, y \rangle \).
+This implies \( y \in \partial f(x) \).
+\hfill\qedsymbol
+
+A proper convex function is locally Lipschitz continuous on the interior of its domain.
+\begin{Definition}[Locally Lipschitz continuous]
+    A function \( f:\mathbb{E}\mapsto \mathbb{R}\cup \{+\infty\} \) is locally Lipschitz continuous at \( \bar x \in \text{dom}(f) \) 
+    if \(\exists L_{\bar x}, \delta_{\bar x} > 0\) such that 
+    \begin{align}
+    |f(x) - f(y)| \leq L_{\bar x} \|x-y\|, \quad \forall x, y \in B(\bar x, \delta_{\bar x}).
+    \end{align}
+\end{Definition}
+Remark: every function that is locally Lipschitz at a point is also continuous at that point.
+
+If a function is locally Lipschitz at every point of a compact set, then it is globally Lipschitz on that set.
+
+\begin{Theorem}[Local Lipschitz continuity of a proper convex function]
+    Let \( f\in \Gamma \) and \( \bar x \in \text{int}(\text{dom}(f)) \). Then \( f \) is locally Lipschitz continuous at \( \bar x \).
+\end{Theorem}
+
+\begin{Definition}[Domain of continuity]
+    For a function \( f:\mathbb{E}\mapsto \mathbb{R}\cup \{+\infty\} \), we call the set
+    \begin{align}
+    \text{cont}(f) = \{ x \in \mathbb{E} : f \text{ is continuous at } x \}
+    \end{align}
+    the domain of continuity of \( f \).
+\end{Definition}
+
+\begin{Corollary}
+    Let \( f\in \Gamma \). Then \( \text{int}(\text{dom}(f)) = \text{cont}(f) \).
+\end{Corollary}
+
+\begin{Theorem}[Boundedness properties of the subdifferential]
+    For \( f\in \Gamma \), the following holds:
+    \begin{enumerate}
+        \item Let \(X \subset \text{int}(\text{dom}(f))\) be nonempty, open, and convex. Then \( f \)
+        is Lipschitz continuous with modulus \( L >0 \) on \( X \) if and only if \( \|v\| \leq L \) for all 
+        \( v \in \partial f(x) \) and \( x \in X \).
+        \item \(\partial f\) maps bounded sets which are compactly contained in \( \text{int}(\text{dom}(f)) \) to bounded sets.
+    \end{enumerate}
+\end{Theorem}
+
+\begin{Corollary}
+    Let \( f\in \Gamma \) and \( \bar x \in \text{int}(\text{dom}(f)) \). Then \( \partial f(\bar x) \) is nonempty, compact, and convex.
+\end{Corollary}
+Proof: By elementary properties of the subdifferential, \( \partial f(\bar x) \) is closed and convex since 
+\( \bar x \in \text{int}(\text{dom}(f)) \). By the boundedness properties of the subdifferential, 
+since \( \{\bar x\} \) is compactly contained in \( \text{int}(\text{dom}(f)) \), 
+\( \partial f(\bar x) \) is bounded. Hence \( \partial f(\bar x) \) is compact.
+\hfill\qedsymbol
+
+
+\subsection{Differentiable convex function}
+Differentiability of a convex function is defined on an open set.
+\begin{Theorem}
+    Let \( f\in \Gamma \) and \( \bar x \in \text{int}(\text{dom}(f)) \). Then
+    \( \partial f(\bar x) \) is a singleton iff \( f \) is differentiable at \( \bar x \). 
+    In this case, \( \partial f(\bar x) = \{\nabla f(\bar x)\} \).
+\end{Theorem}
+Differentiability on an open set implies continuous differentiability on that set.
+\begin{Theorem}
+    Let \( f\in \Gamma \) and \( \bar x \in \text{int}(\text{dom}(f)) \). Then \( f \) is continuously
+    differentiable at \( \bar x \) iff \( \partial f \) is a singleton for all \( x \in \text{int}(\text{dom}(f)) \) and the mapping \( x \mapsto \partial f(x) \) is continuous at \( \bar x \). 
+\end{Theorem}
+
+\begin{Corollary}
+    Let \( f: \mathbb{E}\to \mathbb{R} \cup \{+\infty\} \) be convex. Then \( f \) 
+    if differentiable iff \( f \) is continuously differentiable.
+\end{Corollary}
+
+\subsubsection{Second-order characterizations}
+\begin{Theorem}
+    Let \( f: \mathbb{E}\to \mathbb{R} \cup \{+\infty\} \) be twice differentiable 
+    on the open convex set \( \Omega \subset \text{int}(\text{dom}(f)) \).
+    Then the following hold:
+    \begin{enumerate}
+        \item \( f \) is convex on \( \Omega \) iff \( \nabla^2 f(x) \succeq 0 \) for all \( x \in \Omega \).
+        \item If \( \nabla^2 f(x) \) is positive definite for all \( x \in \Omega \), then \( f \) is strictly convex on \( \Omega \).
+        \item \( f \) is \( \sigma \) strongly convex on \( \Omega \) iff for all \( x \in \Omega \), 
+        the smallest eigenvalue of \( \nabla^2 f(x) \) is bounded below by \( \sigma \), i.e. \( \nabla^2 f(x) \succeq \sigma I \).
+    \end{enumerate}
+\end{Theorem}
+\begin{Corollary}
+    Let \( f: \mathbb{R}^n \to \mathbb{R}\) be defined by 
+    \begin{align}
+        f(x) = \frac{1}{2} x^T A x + b^T x + c,
+    \end{align}
+    with \( A \in \mathbb{R}^{n\times n} \) symmetric, \( b \in \mathbb{R}^n \), and \( c \in \mathbb{R} \). Then \( f \) 
+    is convex iff \( A \succeq 0 \), and \( f \) is \( \sigma \)-strongly convex iff \( f \) is 
+    strictly convex iff \( A \) is positive definite.
+\end{Corollary}
+
+\subsection{Subdifferential calculus}
+\begin{Theorem}
+    For all \( i \in I={1,\ldots,m} \), let \( f_i \in \Gamma\) and \( x \in \bigcap_{i=1}^m \text{int}(\text{dom}(f_i)) \).
+    Set \( f = \max_{i\in I} f_i \) and \( I(x) = \{ i \in I : f_i(x) = f(x) \} \). Then
+    \begin{align}
+        \partial f(x) = \text{conv}\left( \bigcup_{i\in I(x)} \partial f_i(x) \right).
+    \end{align}
+\end{Theorem}
+
+\begin{Corollary}
+    For all \( i \in I={1,\ldots,m} \), let \( f_i \in \Gamma\) be 
+    differentiable at \( x \in \bigcap_{i=1}^m \text{int}(\text{dom}(f_i)) \).
+    Set \( f = \max_{i\in I} f_i \) and \(I(x) = \{ i \in I : f_i(x) = f(x) \} \). Then
+    \begin{align}
+        \partial f(x) = \text{conv}\left( \bigcup_{i\in I(x)} \{\nabla f_i(x)\} \right).
+    \end{align}
+\end{Corollary}
+
+\begin{Theorem}[Fenchel-Rockafellar duality]
+    Let \( f: \mathbb{E}_1 \to \mathbb{R}\cup \{+\infty\} \) and \( g: \mathbb{E}_2 \to \mathbb{R}\cup \{+\infty\} \)
+and \( L \in \mathcal{L}(\mathbb{E}_1, \mathbb{E}_2) \). Then the followings hold:
+    \begin{enumerate}
+        \item (Weak duality)
+        We have 
+        \begin{align}
+            p := \inf_{x\in \mathbb{E}_1}\{f(x) + g(L(x))\} \geq \sup_{y\in \mathbb{E}_2}\{-f^*(L^*(y)) - g^*(-y)\} =: d.
+        \end{align}
+        \item (Strong duality) If \( f,g \) are convex and the qualification condition \( 0 \in \text{int}(\text{dom}(g) - L(\text{dom}(f))) \) holds, 
+        then equality holdes, i.e, \( p = d \), and the supremum is attained in finite.
+        \item (Primal-dual recovery) If \( f\in \Gamma_0(\mathbb{E}_1) \), \( g \in \Gamma_0(\mathbb{E}_2) \),
+        the following are equivalent for \( \bar x \in \mathbb{E}_1 \) and \( \bar y \in \mathbb{E}_2 \):
+        \begin{enumerate}
+            \item \( p=d \), \( \bar x \in \arg\min\{f(x) + g(L(x))\}\), and \( \bar y \in \arg\max\{-f^*(L^*(y)) - g^*(-y)\} \).
+            \item \( L^*(\bar y)\in \partial f (\bar x) \), and \( -\bar y \in \partial g(L(\bar x)) \).
+            \item \(\bar x \in \partial f^*(L^*(\bar y)) \), and \( L(\bar x) \in \partial g^*(-\bar y) \).
+    \end{enumerate}
+    \end{enumerate}
+\end{Theorem}
+We note that the qualification condition is satisfied under a stronger condition 
+\( \text{int}(\text{dom}(g)) \cap L(\text{dom}(f)) \neq \emptyset \), which is often easier to verify in practice.
+
+We call \( \inf_{x \in \mathbb{E}_1} \{f(x) + g(L(x))\} \) the primal problem, and \( \sup_{y \in \mathbb{E}_2} \{-f^*(L^*(y)) - g^*(-y)\} \) the dual problem.
+Part (2), (3) of the theorem say under the qualification condition, 
+solving the primal problem is equivalent to solving the dual problem, and we can get the 
+\(\arg\min, \arg\max\) from (3).
+
+Fenchel duality gives us the sum rule for subdifferential:
+\begin{Theorem}[Generalized sum rule]
+    For \( f: \mathbb{E} \to \mathbb{R}\cup \{+\infty\} \) and \( g: \mathbb{E} \to \mathbb{R}\cup \{+\infty\} \), 
+    and \( L \in \mathcal{L}(\mathbb{E}, \mathbb{E}) \), the following hold:
+    \begin{enumerate}
+        \item \( \partial (f + g\circ L)(x) \supset \partial f(x) + L^*(\partial g(L(x))) \) for all \( x \in \mathbb{E} \).
+        \item If \( f\in \Gamma_0(\mathbb{E}) \), \( g \in \Gamma_0(\mathbb{E}) \), and 
+        the qualification condition \( 0 \in \text{int}(\text{dom}(g) - L(\text{dom}(f))) \) holds, 
+        the equality holds, i.e. \( \partial (f + g\circ L)(x) = \partial f(x) + L^*(\partial g(L(x))) \) for all \( x \in \mathbb{E} \).
+    \end{enumerate}
+\end{Theorem}
+
+\begin{Corollary}[Subdifferential sum rule]
+    For \( f, g \in \Gamma\), then 
+    \begin{align}
+        \partial (f + g)(x) \supset \partial f(x) + \partial g(x), \quad \forall x \in \mathbb{E}.
+    \end{align}
+    If the qualification condition holds, equality holds, i.e. \( \partial (f + g)(x) = \partial f(x) + \partial g(x) \) for all \( x \in \mathbb{E} \).
+\end{Corollary}
+
+\begin{Corollary}[Subdifferential chain rule]
+    Let \( g\in \Gamma(\mathbb{E}_2) \) and \( L \in \mathcal{L}(\mathbb{E}_1, \mathbb{E}_2) \).
+    Then \( \partial (g\circ L)(x) \supset L^*(\partial g(L(x))) \). Under the 
+    qualification condition, the equality holds, i.e. \( \partial (g\circ L)(x) = L^*(\partial g(L(x))) \) for all \( x \in \mathbb{E}_1 \).
+\end{Corollary}
+
+\begin{Theorem}[Subdifferential of infimal convolution]
+    Let \( f, g \in \Gamma_0\) and \( x \text{dom}(f \# g)\). Then 
+    \begin{align}
+        \partial (f \# g)(x) = \partial f(\bar u) \cap \partial g(x - \bar u),
+    \end{align}
+    for all \( \bar u \in \arg\min_u \{f(u) + g(x-u)\} \).
+\end{Theorem}
+
+\begin{Corollary}[Derivative of Mereau envelop]
+    Let \( f \in \Gamma_0 \) and \( \lambda>0 \). Then 
+    \( e_\lambda f \) is continuously differentiable with \( \frac1\lambda \) Lipschitz gradient
+    given by 
+    \begin{align}
+        \nabla e_\lambda f(x) = \frac{1}{\lambda}(I - \text{prox}_{\lambda f})(x).
+    \end{align}
+\end{Corollary}
+
+\begin{Theorem}[Moreau decomposition]
+    Let \( f \in \Gamma_0 \) and \( \lambda > 0 \). Then for all \( x \in \mathbb{E} \), we have
+    \begin{align}
+        x = \text{prox}_{\lambda f}(x) + \lambda \text{prox}_{\frac{1}{\lambda} f^*}\left(\frac{x}{\lambda}\right).
+    \end{align}
+\end{Theorem}
+
+\begin{Proposition}
+    For any proper, convex, closed function \( f:\mathbb{E}\to \overline{\mathbb{R}} \) and \(g: \mathbb{E} \to \mathbb{R} \) is 
+    continuously differentiable, then
+    \begin{align}
+        \partial (f + g)(x) = \partial f(x) + \nabla g(x), \quad \forall x \in \mathbb{E}.
+    \end{align}
+\end{Proposition}
+
+\begin{Corollary}[Primal-dual optimality condition]
+    Consider the problems
+    \begin{enumerate}
+        \item[P.] \(\min_x h(Lx) + g(x)\)
+        \item[D.] \(\max_y -g^*(-L^*(y))-h^*(y)\)
+    \end{enumerate}
+    where \( g: \mathbb{E} \to \overline{\mathbb{R}}\) and \( h: Y \to \overline{\mathbb{R}} \) 
+    are proper, closed, and convex functions, and \( L \in \mathcal{L}(\mathbb{E}, Y) \).
+
+    Suppose the optimal value of the primal and dual problem are equal, as implied by the qualification condition.
+    Then, \( x \) is the minimizer of the primal problem and \( y \) is the maximizer of the dual problem iff
+    \begin{align}
+        \begin{bmatrix}
+            0 \\ 0
+        \end{bmatrix}
+        \in \begin{bmatrix}
+            0 & L^* \\
+            -L & 0
+        \end{bmatrix}
+        \begin{bmatrix}
+            x \\ y
+        \end{bmatrix}
+        +
+        \partial g(x) \times \partial h^*(y).
+    \end{align}
+\end{Corollary}
+
+% end of main text
+
+\makeatletter
+  \renewcommand{\section}{\@startsection{section}%
+    {3}{0.8em}{-3ex \@plus -1ex \@minus -.2ex}%
+    {1.5ex \@plus .2ex}
+    {\hspace*{-5.5em}\fcolorbox{Periwinkle}{Periwinkle}{\parbox[c][1.0ex][b]{4em}{\phantom{space}}}
+    \normalfont\Large\itshape\color{blue}}}
+\makeatother
+
+\bibliography{marginnotes}
+\bibliographystyle{plainnat}
+
+\end{document}
