@@ -111,6 +111,8 @@
 \declaretheorem[thmbox=S]{Formula} % Theorem box S-size
 \declaretheorem[thmbox=S]{Statement} % Theorem box S-size
 
+\declaretheorem[shaded={bgcolor=PeachPuff,
+    textwidth=22em}]{Remark} % Colorbox-styled Proposition
 % set up pdf bookmark depth
 \hypersetup{bookmarksdepth=3}
 
@@ -166,6 +168,56 @@ We have \( \text{int}(Q) \subseteq \text{ri}(Q) \) and \( \text{rb}(Q) \subseteq
     \text{epi}(f) = \{ (x, \alpha) \in \mathbb{E} \times \mathbb{R} : f(x) \leq \alpha \}.
     \end{align}
 \end{Definition}
+
+We review the set operations that will be frequently used in the following sections:
+\begin{Definition}[Minkowski sum]
+    Minkowski sum of sets: For \( A, B \subseteq \mathbb{E} \), we define the Minkowski sum of \( A \) and \( B \) by
+    \begin{align}
+    A + B = \{ a + b : a \in A, b \in B \}.
+    \end{align}
+\end{Definition}
+\begin{Proposition}[Minkowski sum of subspaces]
+    For subspaces \( V, W \subseteq \mathbb{E} \), we have \( V + W = \text{span}(V \cup W) \).
+\end{Proposition}
+\begin{Example}[Common set algebra]
+    \vspace{-1em}
+    \begin{enumerate}
+        \item Translation: \( A + \{x\} = \{a + x : a \in A\} \)\\
+        It implies that \(s \in (A + x) \iff s - x \in A\).
+        \item Dilation: \(B(0, r_1) + B(0, r_2) = B(0, r_1+r_2)\)
+        \item Smoothing; \( A + B(0, r) \) has rounded corners.
+    \end{enumerate}
+\end{Example}
+\begin{Definition}[Cone operator]
+        For \( A \subseteq \mathbb{E} \),
+        the cone operator is defined such that 
+        \( \mathbb{R}_+ (A)= \{ \lambda a : \lambda \geq 0, a \in A \} \).
+\end{Definition}
+\marginnote{
+    \begin{Remark}
+        For the cone operator,
+        we have the identity that
+        \begin{align}
+            x \in \mathbb{R}_+(A) \iff \exists \lambda > 0text{ s.t. } \frac{x}{\lambda} \in A\\
+            x \in \mathbb{R}_+(A) \setminus \{0\} \iff \frac{x}{\|x\|}\in \mathbb{R}_+(A)
+        \end{align}
+    \end{Remark}
+}
+
+\begin{Definition}[Polar Cone]
+    Let $C \subseteq \mathbb{E}$ be a cone. The \textbf{polar cone} of $C$, denoted $C^\circ$, is defined as:
+    \begin{equation}
+        C^\circ = \{ s \in \mathbb{E} : \langle s, v \rangle \le 0, \forall v \in C \}.
+    \end{equation}
+\end{Definition}
+
+\begin{Definition}[Normal Cone]
+    Let $C \subseteq \mathbb{E}$ be a convex set and $x \in C$. The \textbf{normal cone} to $C$ at $x$, denoted $N_C(x)$, is defined as:
+    \begin{equation}
+        N_C(x) = \{ s \in \mathbb{E} : \langle s, v - x \rangle \le 0, \forall v \in C \}.
+    \end{equation}
+\end{Definition}
+
 \subsection{Lower semicontinuity}
 \begin{Definition}[Lower limit]
     For \(f: \mathbb{E}\to \mathbb{R}\), and \( \bar x \in \mathbb{E} \), 
@@ -177,12 +229,14 @@ We have \( \text{int}(Q) \subseteq \text{ri}(Q) \) and \( \text{rb}(Q) \subseteq
     \end{align}
     as the lower limit of \( f \) at \( \bar x \).
 \end{Definition}
-
+\marginnote{Of course there are a lot more equivalent
+definition and characterization of liminf.}
 \begin{Definition}[Continuity notions]
     Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \) 
     and \( \bar x \in \mathbb{E} \), then \( f \) is 
     said to be lower semicontinuous at \( \bar x \) if \( f(\bar x) \leq \liminf_{x\to \bar x} f(x) \).
 \end{Definition}
+
 Alternatively, \( f \) is lsc at \( \bar x \) iff there does not exists 
 a sequence \( \{x^k\} \to \bar x \) such that \( f(x^k) < f(\bar x) \).
 
@@ -206,6 +260,14 @@ As \( \liminf_{x\to \bar x} f(x) \leq f(\bar x)
          \item \( \text{lev}_{\leq\alpha} f \) is closed for all \( \alpha \in \mathbb{R} \)
      \end{enumerate}
  \end{Proposition}
+
+\marginnote{
+    \begin{Remark}[Closedness of a positive combination]
+        For \( p \in \mathbb{N} \), let \( f_1, \ldots, f_p \) be lsc and
+        \(\alpha_i \geq 0\) for \(i=1,\ldots, p\). 
+        Then \( f = \sum_{i=1}^p \alpha_i f_i \) is lsc.
+    \end{Remark}
+}
 
 \begin{Corollary}[lsc of indicator function]
     Let \( C \subseteq \mathbb{E} \), its indicator function \( \delta_C \) is 
@@ -240,12 +302,59 @@ we have:
 \end{align}
 but not the reverse.
 
+\begin{Definition}[Coercivity and supercoercivity]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \). Then \( f \) is called 
+    \begin{itemize}
+        \item coercive if \( \lim_{\|x\|\to \infty} f(x) = \infty \), which is sometimes called 0-coercive.
+        \item supercoercive if \( \lim_{\|x\|\to \infty} \frac{f(x)}{\|x\|} = \infty \), which is sometimes called 1-coercive.
+    \end{itemize}
+\end{Definition}
+\begin{Lemma}[Level-boundedness and coercivity]
+    A function \( f:\mathbb{E}\to \overline{\mathbb{R}} \) is coercive iff \( f \) is level-bounded.
+\end{Lemma}
+
+Coercivity gives control of the function value at infinity, and hence guarantees the existence of the 
+minimum.
+But coercivity alone does not guarantee the existence and  uniqueness of the minimizer.
+We also need the function to be lsc to control the continuity, and thus the 
+attainment of the minimum.
+
 \begin{Theorem}[Existence of minima]
     \label{thm:exi_min}
     Let \( f:\mathbb{E}\to \mathbb{R}\cup\{\infty\} \) be proper, 
     lsc, and level bounded. Then \( \arg\min f \neq \emptyset \)
     and \( \min f = \inf f \in \mathbb{R} \).
 \end{Theorem}
+
+We extend this to cover the problem of minimizing \( f \) over a closed set \( C \).
+The closedness is required to give control on attainment of minimum 
+at the boundary.
+\begin{Corollary}[Existence of minimizer]
+    \label{col:exi_minimizer}
+    Let \( f:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \) be  \textbf{lower semicontinuous} and let 
+    \( C \subseteq \mathbb{E} \) be closed such that \( \text{dom}(f) \cap C \neq \emptyset \)
+    and suppose one of the following holds:
+    \begin{enumerate}
+        \item \( f \) is coercive
+        \item \( C \) is bounded
+    \end{enumerate}
+    Then \( f \) has a minimizer on \( C \).
+\end{Corollary}
+\marginnote{Properness of \( f \) comes from definition that it cannot take value \( -\infty \).}
+Proof: Consider the function \( g = f + \delta_C \).
+Then it holds that \(\text{lev}_{\leq \alpha} g = \text{lev}_{\leq \alpha} f \cap C\) for all \( \alpha \in \mathbb{R} \).
+
+Hence, under either assumption, \( g \) is closed and bounded level sets.
+Hence, it is lsc and level-bounded, Then the results follows from \Cref{thm:exi_min}.
+\hfill\qedsymbol
+
+An important corollary applies to the sum of functions.
+\begin{Corollary}[Existence of minimizers II]
+    Let \( f, g:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \) be lsc such that \( \text{dom}(f) \cap \text{dom}(g) \neq \emptyset \).
+    If \( f \) is coercive and \( g \) is bounded from below, 
+    then \( f + g \) is coercive and has a minimizer over \( \mathbb{E} \).
+\end{Corollary}
+
 
 \clearpage
 \section{Convex Sets}
@@ -260,6 +369,26 @@ subspace of \( \mathbb{E} \), Minkowski sum of convex sets, hyperplanes,
 affine sets, intersection of convex sets, linear image and 
 preimage of convex sets, half spaces, interval (closed, open, half-open).
 
+\marginnote{
+    \begin{Remark}[Convexity preserving operations]
+        The following operations preserve convexity:
+        \begin{itemize}
+            \item (Intersection)
+            Let \( I \) be an arbitrary index set (possibly uncountable)
+            and \( C_i \subseteq \mathbb{E} \) be convex for all \( i \in I \), then \( \bigcap_{i\in I} C_i \) is convex.
+            \item (Linear image and preimage) Let \( F \in \mathcal{L}(\mathbb{E}_1, \mathbb{E}_2) \) 
+            and \( C \subseteq \mathbb{E}_1 \), \(D \subseteq \mathbb{E}_2 \) be convex, then 
+            \begin{align}
+    F(C) = \{ Fx : x \in C \}, F^{-1}(D) = \{ x : Fx \in D \}
+            \end{align}
+                are convex.
+            \item (Minkowski sum) This implies 
+            translation of a convex set is convex. In 
+            particular, translation of subspace, which 
+            is called affine set, is convex.
+        \end{itemize}
+    \end{Remark}
+}
 \subsection{Projection on convex sets}
 \begin{Definition}[Projection on a set]
     let \( S\subset \mathbb{E} \) be nonempty and 
@@ -268,6 +397,7 @@ preimage of convex sets, half spaces, interval (closed, open, half-open).
     \begin{align}
         P_S(x) = \arg\min_{y\in S} \|x-y\| \subset S
     \end{align}
+    Note that there is no change if we substitute \(\frac12 \|x-y\|^2\) for \(\|x-y\|\) in the above definition.
 \end{Definition}
 
 Now we give sufficient conditions for this subset to be nonempty and unique.
@@ -280,7 +410,7 @@ Now we give sufficient conditions for this subset to be nonempty and unique.
     \end{enumerate}
 \end{Lemma}
 
-\begin{Corollary}[Projection on closed, convex set]
+\begin{Corollary}[Projection on closed, convex set is unique]
     Let \( C \subset \mathbb{E} \) be nonempty, closed, and convex. 
     Then \( P_C(x) \) is a mapping from \( \mathbb{E} \) to \( C \)
     with \( x=P_C(x) \) iff \( x \in C \).
@@ -299,18 +429,72 @@ closed convex set in terms of variational inequality.
 \end{Theorem}
 
 \subsection{Separation Theorem}
+\marginnote{
+    \vspace{1em}
+    \begin{Remark}
+Support function probes the boundary of the set \( C \) in the direction of \( s \).
+In particular, it's the largest shift of a hyperplane with normal vector \( s \) that
+still touches the set \( C \).
+
+For a convex set \( C \), the support function is the distance from the origin to the supporting hyperplane of \( C \) with normal vector \( s \).
+    \end{Remark}
+}
+\begin{Definition}[Support Function]
+    \label{def:support_fct}
+    For a nonempty set $C \subseteq \mathbb{E}$, the \textbf{support function} of $C$ is the function $\sigma_C: \mathbb{E} \to \mathbb{R} \cup \{+\infty\}$ defined by
+    \begin{equation}
+        \sigma_C(s) = \sup_{v \in C} \langle s, v \rangle.
+    \end{equation}
+\end{Definition}
+
+\begin{Definition}[Supporting Hyperplane]
+    A hyperplane $H = \{ z \in \mathbb{E} : \langle s, z \rangle = \alpha \}$ with $s \neq 0$ is said to \textbf{support} a set $C$ at a point $x \in \text{cl}(C)$ if:
+    \begin{enumerate}
+        \item $\langle s, v \rangle \le \alpha$ for all $v \in C$ (Set is in one half-space), and
+        \item $\langle s, x \rangle = \alpha$ (The plane actually touches the set at $x$).
+    \end{enumerate}
+    Note that these conditions combined imply that $\alpha = \sigma_C(s)$.
+\end{Definition}
+
+\marginnote{
+\begin{Remark}[Supporting hyperplane of convex set]
+    Let $C \subset \mathbb{E}$ be a convex set and $x $ in the boundary of $C$. 
+    Then there exists a non-zero vector $s \in \mathbb{E} \setminus \{0\}$ such that 
+    \begin{equation}
+        \langle s, x \rangle = \sigma_C(s) = \sup_{v \in C} \langle s, v \rangle.
+    \end{equation}
+    The set $H = \{ z \in \mathbb{E} : \langle s, z \rangle = \langle s, x \rangle \}$ is a \textbf{supporting hyperplane} to $C$ at $x$.
+\end{Remark}
+}
+That said,
+support function returns the distance from the origin to the supporting hyperplane of \( C \) with normal vector \( s \).
+
 \begin{Theorem}[Separation Theorem]
+    \label{thm:sep}
     Let \( C \subset \mathbb{E}\) be nonempty, closed, and convex,
-    and let \( x\not\in C \), then there exists \( s \in \mathbb{E}\setminus \{0\}\) with 
+    and let \( x\not\in C \), then \textbf{there exists} \( s \in \mathbb{E}\setminus \{0\}\) with 
     \begin{align}
         \langle s, x \rangle > \sup_{v \in C} \langle s, v \rangle.
     \end{align}
-\end{Theorem}
-Substituting \(s\) with \(-s\), we obtain 
-\begin{align}
+Substituting \(s\) with \(-s\), we also obtain 
+    \begin{align}
     \langle s, x \rangle < \inf_{v \in C} \langle s, v \rangle.
 \end{align}
+\end{Theorem}
 
+
+\marginnote{
+    \begin{Remark}
+        The separation theorem implies that  for \( C \subset \mathbb{E} \)
+        nonempty, closed, and convex and \( x \not\in C \), there exists 
+        \(s\in \mathbb{E}\setminus \{0\}\) and \(\beta \in \mathbb{R}\)
+        such that \begin{align}
+        \langle s, x \rangle > \beta > \sup_{v\in C} \langle s, v \rangle.
+        \end{align}
+        Moreover, this inequality can be flipped entirely by substituting \(s\) with \(-s\).
+        So we can choose whichever direction that's more convenient.
+    \end{Remark}
+}
 
 To see the separation, define \( \gamma = \frac12 (\langle s,x\rangle + \sup_{y\in C}\langle s,y\rangle)\).
 Then, \( x\in \{
@@ -323,17 +507,22 @@ lie in two distinct half-spaces defined by the hyperplane
     H = \{ z : \langle s, z\rangle = \gamma \}.
 \end{align}
 
+By positive homogeneity, we can assume \( \|s\| = 1 \) in the above theorem.
+
+
 
 \clearpage
 \section{Convex Functions}
 
-\subsection{Definition and Examples}
+\subsection{Definition and characterization}
 
 \begin{Definition}[Convex functions]
     A function \( f:\mathbb{E}\to \overline{\mathbb{R}} \) is called
     convex if \(\text{epi}(f)\) is a convex set.
 \end{Definition}
+\marginnote{
 We can substitute the the epigraph with strict epigraph.
+}
 
 Convex function also have convex level sets.
 
@@ -345,10 +534,29 @@ function of a convex set, any norm on \( \mathbb{E} \), the scalar functions
 \begin{Proposition}[Domain of a convex function]
     The domain of a convex function is convex.
 \end{Proposition}
-Using the projection linear mapping \(L: (x,\alpha) \in \mathbb{E} \times \mathbb{R} 
+\marginnote{
+    \begin{Remark}
+        This implies convex function have \textbf{connected domain}.
+    \end{Remark}
+}
+Proof:Using the projection linear mapping \(L: (x,\alpha) \in \mathbb{E} \times \mathbb{R} 
 \mapsto x\in \mathbb{E}\),
 we have \(\text{dom}(f) = L(\text{epi}(f))\).
 We know that linear map preserve convexity.
+
+\marginnote{We further characterize the convex level set property:
+\vspace{-1em}
+\begin{Remark}[Quasiconvex functions]
+    A function is called quasiconvex if all its
+    sublevel sets are convex. We have the following hold:
+    \begin{enumerate}
+        \item Every convex function is quasiconvex
+        \item \( f: \mathbb{E} \to \mathbb{R} \cup \{\infty\} \) is quasiconvex 
+        then \(\arg\min f\) is a convex set.
+    \end{enumerate}
+\end{Remark}
+}
+
 
 \begin{Proposition}[Characterizing convexity]
     A function \( f:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \) is 
@@ -359,15 +567,14 @@ We know that linear map preserve convexity.
     \end{align}
 \end{Proposition}
 \marginnote{
-\begin{Corollary}
+\begin{Remark}
     Let \( f:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \), then TFAE:
     \begin{enumerate}
         \item \( f \) is convex
         \item \( f \) is convex on its domain
     \end{enumerate}
-\end{Corollary}
-We note that 
-convexity on the domain is equivalent to convexity on the whole space 
+\end{Remark}
+Convexity on the domain is equivalent to convexity on the whole space 
 because the inequality trivially holds when \( x \) or \( y \) is outside the domain.
 }
 We can extend the above characterization.
@@ -400,7 +607,19 @@ We take the following notation:
     \item \( \Gamma_0 = \Gamma_0(\mathbb{E}) = \{f: \mathbb{E} \to \mathbb{R} \cup \{\infty\} : f \text{ is proper, convex, and lsc}\}
     \) 
 \end{itemize}
-We then introduce stronger notions of convexity.
+
+Now we introduce the important results about affine minorization of convex functions,
+extending from the separation theorem of convex sets (\Cref{thm:sep}).
+\begin{Theorem}[Affine minorization principle]
+    \label{thm:affine_min}
+    For \( f\in \Gamma_0 \), there exists an affine minorant, i.e. there exists
+    \( a \in \mathbb{E} \) and \( \beta \in \mathbb{R} \) such that 
+    \begin{align}
+        f(x) \geq \langle a, x \rangle + \beta, \forall x \in \mathbb{E}.
+    \end{align}
+\end{Theorem}
+
+Lastly, we introduce stronger notions of convexity.
 \begin{Definition}[Strict/strong convexity]
     Let \( f\in \Gamma \) and \( C \subset \text{dom}(f) \) a convex set, then \( f \) is said to be 
     \begin{itemize}
@@ -443,7 +662,23 @@ We then introduce stronger notions of convexity.
     \end{align}
     is convex (lsc).
 \end{Proposition}
-\marginnote{Index does not have to be finite.}
+\marginnote{The index set does not have to be finite.}
+
+\begin{Proposition}[Parametric infimum]
+    Let \( f: \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}\) be convex. Then 
+    \begin{align}
+    g(x) = \inf_{y \in \mathbb{R}^n} f(x, y)
+    \end{align}
+    is convex.
+\end{Proposition}
+
+\begin{Proposition}[Infimum convolution]
+    Let \( f, g: \mathbb{R}^n\to \mathbb{R}\cup \{\infty\} \) be convex. Then the function (studied later in \Cref{def:inf_conv})
+    \begin{align}
+    h(x) = (f \# g)(x) = \inf_{y \in \mathbb{E}} f(y) + g(x - y)
+    \end{align}
+    is convex.
+\end{Proposition}
 
 \begin{Definition}[Affine functions]
     A function \( f:\mathbb{E}_1 \to \mathbb{E}_2 \) is called affine if 
@@ -455,8 +690,8 @@ We then introduce stronger notions of convexity.
 Linear function is affine and affine function is linear if \( f(0)=0 \).
 }
 Every affine function can have a unique representation 
-\(f = L + v\) where \( L \in \mathcal{L}(\mathbb{E}_1, \mathbb{E}_2)
-\) is linear and \( v \in \mathbb{E}_2 \).
+\(f = L + v\) where \( L \in \mathcal{L}(\mathbb{E}_1, \mathbb{E}_2)\)
+is linear and \( v \in \mathbb{E}_2 \).
 
 \begin{Proposition}[Pre-composition of with an affine mapping]
     Let \(H: \mathbb{E}_1 \to \mathbb{E}_2\) be affine and \(g: \mathbb{E}_2 \to \mathbb{R}\cup \{\infty\}\) 
@@ -474,37 +709,300 @@ In an minimization problem:
 If \( f \) is convex and \( C \) is convex, 
 then we call this problem a convex minimization/optimization problem.
 
-\subsection{General existence results}
-\begin{Definition}[Coercivity and supercoercivity]
-    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \). Then \( f \) is called 
-    \begin{itemize}
-        \item coercive if \( \lim_{\|x\|\to \infty} f(x) = \infty \), which is sometimes called 0-coercive.
-        \item supercoercive if \( \lim_{\|x\|\to \infty} \frac{f(x)}{\|x\|} = \infty \), which is sometimes called 1-coercive.
-    \end{itemize}
-\end{Definition}
 
-\begin{Lemma}[Level-boundedness and coercivity]
-    A function \( f:\mathbb{E}\to \overline{\mathbb{R}} \) is coercive iff \( f \) is level-bounded.
-\end{Lemma}
 
-We now extent \Cref{thm:exi_min} to cover the problem above.
-\begin{Corollary}[Existence of minimizer]
-    Let \( f:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \) be lsc and let 
-    \( C \subseteq \mathbb{E} \) be closed such that \( \text{dom}(f) \cap C \neq \emptyset \)
-    and suppose one of the following holds:
-    \begin{enumerate}
-        \item \( f \) is coercive
-        \item \( C \) is bounded
-    \end{enumerate}
-    Then \( f \) has a minimizer on \( C \).
+\subsection{Convex minimization}
+Under convexity, local minimizer implies global minimizer.
+Thus we can extent our results from general optimization problem in 
+\Cref{col:exi_minimizer}.
+\begin{Proposition}
+    Let \( f \in \Gamma \), then every local minimizer (over \( \mathbb{E} \))
+    is a global minimizer.
+\end{Proposition}
+
+\begin{Corollary}[Minimizers in convex optimization]
+   Let \( f \in \Gamma \) and \( C \subseteq \mathbb{E}\) be nonempty and convex.
+   Then every local minimizer of \( f \) over \( C \) is a global minimizer over \( C \).
 \end{Corollary}
-Proof: Consider the function \( g = f + \delta_C \).
-Then it holds that \(\text{lev}_{\leq \alpha} g = \text{lev}_{\leq \alpha} f \cap C\) for all \( \alpha \in \mathbb{R} \).
 
-Hence, under either assumption, \( g \) is closed and bounded level sets.
-Hence, it is lsc and level-bounded, Then the results follows from \Cref{thm:exi_min}.
+\begin{Proposition}
+    Let \( f\in \Gamma \), then \( \arg\min f \) is a convex set.
+\end{Proposition}
+\marginnote{
+This is because \( \text{lev}_{\leq \alpha} f \) is convex for all \( \alpha \in \mathbb{R} \).}
+
+\begin{Corollary}
+    Let \( f \in \Gamma \) and \( C \subseteq \mathbb{E} \) be convex. Then \( \arg\min_C f \) is a convex set.
+\end{Corollary}
+
+\begin{Proposition}[Uniqueness of minimizer]
+    Let \( f \in \Gamma \) be strictly convex, then \( \arg\min f \) has at most one element.
+\end{Proposition}
+
+\begin{Corollary}[Minimizing the sum of convex functions]
+    Let \( f, g \in \Gamma_0\) such that \( \text{dom}(f) \cap \text{dom}(g) \neq \emptyset \). 
+    Suppose that one of the following holds:
+    \begin{enumerate}
+        \item \( f \) is super coercive
+        \item \( f \) is coercive and \( g \) is bounded from below
+    \end{enumerate}
+    Then \( f + g \) is coercive and has a minimizer over \( \mathbb{E} \).
+    If, in addition, \( f \) or \( g \) is strictly convex, then the minimizer is unique.
+\end{Corollary}
+
+\begin{Theorem}[Parametric minimization]
+    Let \( h:\mathbb{E}_1 \times \mathbb{E}_2 \to \mathbb{R}\cup \{\infty\} \) be
+    jointly convex. Then the optimal value function 
+    \begin{align}
+        \varphi: \mathbb{E}_1 \to \overline{\mathbb{R}}, \; 
+        \varphi(x) = \inf_{y \in \mathbb{E}_2} h(x, y)
+    \end{align}
+    is convex. Moreover, the set-valued mapping
+    \begin{align}
+    S: \mathbb{E}_1 \rightrightarrows \mathbb{E}_2, \; S(x) = \arg\min_{y \in \mathbb{E}_2} h(x, y)
+    \end{align}
+    is convex valued.
+\end{Theorem}
+The second assertion follows from \( y \mapsto h(x,y) \) is convex for all \( x \in \mathbb{E}_1 \).
+
+
+\clearpage
+
+\section{Infimal Convolution of Convex Functions}
+\subsection{The operation of infimal convolution}
+\begin{Definition}[Infimal convolution]
+    \label{def:inf_conv}
+    Let \( f, g:\mathbb{E}\to \mathbb{R}\cup \{\infty\} \).
+    The infimal convolution of \( f \) and \( g \) is the function
+    \begin{align}
+        (f \# g): \mathbb{E}\to \overline{\mathbb{R}}\; (f\# g)(x) = \inf_{u \in \mathbb{E}} \{ f(u) + g(x - u) \}
+    \end{align}
+    for all \( x \in \mathbb{E} \). We call the infimal convolution \( f\# g \) exact at \( x \) if 
+    \begin{align}
+        \arg\min_{u \in \mathbb{E}} \{ f(u) + g(x - u) \} \neq \emptyset.
+    \end{align}
+    We call \( f\# g \) exact if it is exact at every \( x\in \text{dom}(f\# g) \).
+\end{Definition}
+\marginnote{We have the representation 
+\begin{align}
+    (f\# g)(x) = \inf_{u, v \in \mathbb{E}} \{ f(u) + g(v) : u + v = x \}.
+\end{align}}
+
+\begin{Lemma}
+    \label{lem:inf_conv}
+    Let \(f,g: \mathbb{E}\to \mathbb{R}\cup \{\infty\}\). Then the following hold:
+    \begin{enumerate}
+        \item \( \text{dom}(f \# g) = \text{dom}(f) + \text{dom}(g) \)
+        \item \( f \# g = g \# f \)
+    \end{enumerate}
+\end{Lemma}
+\marginnote{
+    For \Cref{lem:inf_conv} (1), an example is \( g=\delta_{\{x_0\}} \), 
+    in this case, \( (f\# g)(x) = f(x-x_0) \) since \( g(x-x_0) = 0 \) and \( g(x-u) = \infty \) for all \( u \neq x-x_0 \).
+    Then \( \text{dom}(f\# g) = \text{dom}(f) + \{x_0\} \) is a translation.
+}
+Moreover, we have the trivial 
+inequality \( (f \# g) \leq f(u) + g(x-u) \) for all \( u \in \mathbb{E} \).
+
+Convexity is preserved under infimal convolution.
+\begin{Proposition}[Infimal convolution of convex functions]
+    \label{prop:inf_conv_cvx}
+    Let \( f, g: \mathbb{E}\to \mathbb{R}\cup \{\infty\} \) be convex, then \( f\# g \) is convex.
+\end{Proposition}
+However, lsc is not preserved under infimal convolution.
+
+
+
+\begin{Theorem}[Infimal convolution of \( \Gamma_0 \)]
+    Let \( f, g \in \Gamma_0 \) and suppose that one of the following conditions hold:
+    \begin{enumerate}
+        \item \( f \) is supercoercive
+        \item \( f \) is coercive and \( g \) is bounded from below
+    \end{enumerate}
+    Then, \( f \# g \in \Gamma_0 \) and the infimal convolution is exact.
+\end{Theorem}
+
+\subsection{Moreau envelopes and proximal mappings}
+\begin{Definition}[Moreau envelop and proximal mapping]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}}\). The Moreau envelope of \( f \) 
+    (to the parameter \( \lambda > 0 \)) is the function \(e_\lambda f:\mathbb{E}\to \overline{\mathbb{R}} \) defined by
+    \begin{align}
+    e_\lambda f(x) = \inf_{u \in \mathbb{E}} \{ f(u) + \frac{1}{2\lambda} \|x - u\|^2 \}.
+    \end{align}
+    The (possibly set-valued) mapping \( P_\lambda f: \mathbb{E} \rightrightarrows \mathbb{E} \) 
+    \begin{align}
+    P_\lambda f(x) = \arg\min_{u \in \mathbb{E}} \{ f(u) + \frac{1}{2\lambda} \|x - u\|^2 \}
+    \end{align}
+    is called the proximal mapping or prox-operator to the parameter \( \lambda \) of \( f \).
+\end{Definition}
+\marginnote{\( e_\lambda (\alpha f) = \alpha e_{\lambda/\alpha} f
+ \) for all \( \alpha, \lambda > 0 \).}
+
+\begin{Proposition}[Coefficients in Moreau envelope and proximal mapping]
+    We have:
+    \begin{align}
+        e_\lambda f(x) = \frac{1}{\lambda} e_1 (\lambda f)(x), \quad P_\lambda f(x) = P_1 (\lambda f)(x).
+    \end{align}
+\end{Proposition}
+
+\begin{Proposition}
+    Let \( f \in \Gamma_0\) and \( \lambda > 0 \). Then \( e_\lambda f \in \Gamma_0 \) 
+    is finite-valued and \( P_\lambda f \) is single-valued and nonempty.
+\end{Proposition}
+Hence, when \( f \in \Gamma_0 \), we have:
+\begin{align}
+    e_\lambda f(x) &= f(P_\lambda f(x)) + \frac{1}{2\lambda} \|x - P_\lambda f(x)\|^2\\
+    &\leq f(u) + \frac{1}{2\lambda} \|x - u\|^2 \; \forall u \in \mathbb{E}.
+\end{align}
+So the Moreau envelope is a minorant of \( f \).
+\begin{Proposition}
+    \label{prop:prox_ineq}
+    Let \( f \in \Gamma_0 \) and \( x,p \in \mathbb{E} \). Then \( p = P_1f(x)  \) 
+    iff \( \langle y-p, x-p \rangle + f(p) \leq f(y) 
+     \) for all \( y \in \mathbb{E} \). Namely,
+    \begin{align}
+        \langle y-p, x-p \rangle \leq f(y) - f(p), \forall y \in \mathbb{E}.
+    \end{align}
+\end{Proposition}
+\marginnote{
+    \begin{Remark}
+        \Cref{prop:prox_ineq} in fact gives: \begin{align}
+            x-p \in \partial f(p).
+        \end{align}
+        for \( p = P_1f(x) \) and \( f \in \Gamma_0 \). 
+    \end{Remark}
+}
+
+\begin{Proposition}[Firm nonexpansiveness of the proximal mapping]
+    Let \( f \in \Gamma_0 \) and \( x, y \in \mathbb{E} \). Then 
+    \begin{align}
+        \|P_1f(x) - P_1f(y)\|^2 \leq \langle P_1f(x) - P_1f(y), x - y \rangle.
+    \end{align}
+    By CSI, this can be extent to show that \( P_1(x) \) is globally Lipschitz with constant 1,
+    \begin{align}
+        \|P_1f(x) - P_1f(y)\| \leq \|x - y\|.
+    \end{align}
+\end{Proposition}
+Compared to nonexpansiveness, firm nonexpansiveness is a stronger property
+because it rules out the possibility of rotation.
+\marginnote{For \( T: \mathbb{E} \to \mathbb{E} \) satisfies 
+firm nonexpansiveness, we can substitute \( I - T \) instead of 
+\( T \) in the inequality.}
+
+Firm nonexpansiveness also implies globally 1-Lipschitz, and hence continuous.
+
+
+\clearpage
+
+\section{Conjugate of Convex Functions}
+
+\subsection{Convex hull of a function}
+Every proper, closed, convex function is the pointwise supremum of its affine minorants.
+\begin{Theorem}[Envelop representation of \( \Gamma_0 \)]
+    Let \( f\in \Gamma_0 \). Then \( f \) is the pointwise supremum of all affine functions minorizing it
+    \begin{align}
+        f(x) = \sup\{\langle a, x \rangle + \beta : a \in \mathbb{E}, \beta \in \mathbb{R}, f(y) \geq \langle a, y \rangle + \beta, \forall y \in \mathbb{E} \}.
+    \end{align}
+    or simply \( f(x) = \sup\{h(x): h\leq f, \text{ h affine }\} \).
+\end{Theorem}
+
+\begin{Definition}[Convex hull of a function]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \). Then the pointwise supremum of all convex 
+    functions minorizing \( f \), i.e.
+    \begin{align}
+    \text{conv}(f)(x) = \sup\{g(x): g \leq f, \text{ g convex }\}
+    \end{align}
+    is called the convex hull of \( f \). Moreover, we define the closed convex hull of \( f \) by
+    \begin{align}
+    \overline{\text{conv}}(f)(x) = \sup\{g(x): g \leq f, \text{ g convex and lsc }\}.
+    \end{align}
+\end{Definition}
+\marginnote{Since both convexity and lsc are preserved under pointwise supremum, 
+we find that the convex hull is the largest convex function that minorizes \( f \) 
+and the closed convex hull is the largest convex and lsc function that minorizes \( f \).
+
+Moreover we have the following:
+\begin{Remark}
+for a set \( C \subset \mathbb{E}\), 
+defining the convex hull of \( C \) as \[\text{conv}(C) = \bigcap\{C \subset S, S \text{ is convex}\}\]
+and the closed convex hull of \( C \) as \[\overline{\text{conv}}(C) = \bigcap\{C \subset S, S \text{ is closed and convex}\}\] 
+then we have the following hold:
+\begin{align}
+    \overline{\text{conv}}(C) = \text{cl}(\text{conv}(C)).
+\end{align}
+\end{Remark}
+}
+We have \( \overline{\text{conv}}(f) = \text{cl}(\text{conv}(f)) \).
+
+\begin{Corollary}[Affine envelope representation of closed convex hull]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \) be proper and minorized by an affine function. 
+    Then the closed convex hull of \( f \) is the pointwise supremum of all affine functions minorizing \( f \), i.e.
+    \begin{align}
+        \overline{\text{conv}}(f)(x) = \sup\{\langle a, x \rangle + \beta : a \in \mathbb{E}, \beta \in \mathbb{R}, f(y) \geq \langle a, y \rangle + \beta, \forall y \in \mathbb{E} \}.
+    \end{align}
+\end{Corollary}
+Proof of this just need to show that the closed convex hull is proper.
+
 \hfill\qedsymbol
 
+\subsection{Fenchel Conjugate}
+\begin{Definition}[Fenchel conjugate]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \). The Fenchel conjugate of \( f \) is the function \( f^*:\mathbb{E}\to \overline{\mathbb{R}} \) defined by
+    \begin{align}
+        f^*(y) = \sup_{x \in \mathbb{E}} \{\langle x, y \rangle - f(x)\}.
+    \end{align}
+    The function \( f^{**} = (f^*)^* \) is called the biconjugate of \( f \).
+\end{Definition}
+When we fix a slope \( y \), the function \( y \mapsto f^*(y) \)
+tells what is the highest we can push the affine minorant with slope \( y \) without 
+exceeding \( f \).
+
+\begin{Corollary}[Fenchel-Young inequality]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \). Then for all \( x \in \mathbb{E} \) and \( y \in \mathbb{E} \),
+    \begin{align}
+        f(x) + f^*(y) \geq \langle x, y \rangle.
+    \end{align}
+\end{Corollary}
+We have \( f \leq g \implies f^* \geq g^* \) and \( f^{**} \leq f \).
+
+\begin{Theorem}[Fenchel-Moreau Theorem]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \)
+    be proper and have an affine minorant. Then the following hold:
+    \begin{enumerate}
+        \item \( f^*, f^{**} \) are closed, proper, and convex
+        \item \( f^{**} =\overline{\text{conv}}(f) \)
+        \item \( f^{*} = (\text{conv}(f))^* = (\overline{\text{conv}}(f))^* \)
+    \end{enumerate}
+\end{Theorem}
+\marginnote{(3) means they ahve the same affine minorantnt.}
+
+\begin{Proposition}[Elementary cases of conjugacy]
+    Let \( f:\mathbb{E}\to \overline{\mathbb{R}} \). Then the following hold:
+    \begin{enumerate}
+        \item \((f - \langle a, \cdot \rangle)^* = f^*(\cdot + a)\)
+        \item \((f + \gamma)^* = f^* - \gamma\) for all \( \gamma \in \mathbb{R} \)
+         \item \( (\lambda f)^* = \lambda f^*(\cdot/\lambda) \) for all \( \lambda > 0 \)
+         \item Let \( g: \mathbb{E}\to \overline{R} \), \(h: \mathbb{E}\to \overline{R} \) 
+         proper, closed, and convex functions, and \( A \in \mathcal{L}(\mathbb{E}, Y)\). Define 
+            \( F(x,y) = h(Ax+y) + g(x)\), then 
+            \begin{align}
+                F^*(x,y) = h^*(y) + g^*(-A^*y + x).
+            \end{align}
+    \end{enumerate}
+\end{Proposition}
+
+\begin{Proposition}[Conjugate of infimal convolution]
+    Let \( f, g:\mathbb{E}\to \overline{\mathbb{R}} \). Then 
+    \begin{align}
+        (f\# g)^* = f^* + g^*.
+    \end{align}
+    Moreover, suppose that \( f,g \in \Gamma_0 \) 
+    and the qualification condition (e.g \( \text{dom}(f) \cap \text{dom}(g) \neq \emptyset \)) holds, then
+    \begin{align}
+        (f + g)^* = f^* \# g^*.
+    \end{align}
+    (Proving the second assertion requires Fenchel duality type argument in the next Chapter.)
+\end{Proposition}
 
 
 
@@ -524,8 +1022,49 @@ Hence, it is lsc and level-bounded, Then the results follows from \Cref{thm:exi_
     \end{align}
     is called the subdifferential of \( f \) at \( \bar x \).
 \end{Definition}
-Subdifferential contains exactly the slopes of all affine minorants
+Subdifferential connects back with the affine minorization principle 
+(\Cref{thm:affine_min}),
+in particular, it contains exactly the slopes of all affine minorants
 of \( f \) at \( \bar x \).
+
+That said, \( s\in \partial f(x) \) iff the normal vector \( (s, -1) \) 
+gives a supporting hyperplane to the epigraph of \( f \) at \( (x, f(x)) \):
+\begin{align}
+    \langle \begin{bmatrix}
+s\\-1
+    \end{bmatrix}, \begin{bmatrix}\bar x \\ f(\bar x)
+    \end{bmatrix}\rangle
+    \geq
+    \langle \begin{bmatrix}
+s\\-1
+    \end{bmatrix}, \begin{bmatrix}
+        x \\ \alpha
+    \end{bmatrix} 
+    \rangle
+    , \forall (x,\alpha)\in \text{epi}(f).
+\end{align}
+Unpacking the inner product, we have
+\marginnote{
+    \begin{Remark}
+Notice in inequality \eqref{eq:subgradient_vec},
+the LHS less than \(-f^*(s)\). So we have 
+\begin{align}
+    -f^*(s) \geq \langle s, x \rangle - \alpha
+\end{align}
+for all \( (x,\alpha) \in \text{epi}(f) \). 
+    \end{Remark}
+}
+\begin{align}
+\langle s, \bar x \rangle - f(\bar x) \geq 
+\langle s, x \rangle - \alpha \iff 
+\alpha \geq f(\bar x) + \langle s, x - \bar x \rangle
+\label{eq:subgradient_vec}
+\end{align}
+for all \( (x,\alpha) \in \text{epi}(f) \).
+
+In particular, we can plugin \( (x, \alpha) = (x, f(x)) \in \text{epi}(f) \), 
+then we recover the subgradient inequality
+\[ f(x) \geq f(\bar x) + \langle s, x - \bar x \rangle. \]
 
 \begin{Proposition}[Elementary properties of the subdifferential]
     Let \( f:\mathbb{E}\mapsto \overline{\mathbb{R}} \). Then the following hold:
@@ -538,26 +1077,30 @@ of \( f \) at \( \bar x \).
     \end{enumerate}
 \end{Proposition}
 
+% \clearpage
 \begin{Theorem}[Subdifferential and conjugate function]
     Let \( f:\mathbb{E}\mapsto \overline{\mathbb{R}} \). Then 
     the following are equivalent:
     \begin{enumerate}
         \item \( y \in \partial f (x) \).
-        \item \( x \in \arg\min_z\{\langle z, y \rangle - f(z)\} \)
+        \item \( x \in \arg\max_z\{\langle z, y \rangle - f(z)\} \)
         \item \( f(x) + f^*(y) = \langle x, y \rangle \) \textbf{[Fenchel-Young equality]}
     \end{enumerate}
     If \( f \in \Gamma_0\), these are also equivalent to
     \begin{enumerate}
         \setcounter{enumi}{3}
         \item \( x \in \partial f^*(y) \)
-        \item \( y \in \arg\min_z\{\langle x, z \rangle - f^*(z)\} \)
+        \item \( y \in \arg\max_z\{\langle x, z \rangle - f^*(z)\} \)
     \end{enumerate}
     Note that (1) and (4) are equivalent to \( \partial f^* \) 
     is an inverse of \( \partial f \).
 \end{Theorem}
+\marginnote{
+\vspace{-15em}\\
 Proof: Notice that 
 \begin{align}
-    y \in \partial f(x) &\iff f(z) \geq f(x) + \langle y, z - x \rangle, \forall z \in \mathbb{E} \\
+    &y \in \partial f(x)\\
+    &\iff f(z) \geq f(x) + \langle y, z - x \rangle, \forall z \in \mathbb{E} \\
     &\iff \langle z, y \rangle - f(z) \le \langle x, y \rangle - f(x), \forall z \in \mathbb{E} \\
     &\iff \langle x, y \rangle - f(x) \ge \sup_z \{\langle z, y \rangle - f(z)\} = f^*(y) \\
     \intertext{Combine with Fenchel-Young inequality \( f(x) + f^*(y) \ge \langle x, y \rangle \), we have}
@@ -565,7 +1108,12 @@ Proof: Notice that
 \end{align}
 Apply the same argument to \( f^* \) and using the fact that \( f^{**} = f \) for \( f \in \Gamma_0 \), we 
 complete the proof.
-\hfill\qedsymbol
+\hfill\qedsymbol}
+When \( f\in \Gamma_0 \) and differentiable at \( x \), then 
+\begin{align}
+ \nabla f^* (x) = (\nabla f(x))^{-1}  
+\end{align}
+where the RHS is the inverse function of \( \nabla f \).
 
 \subsection{Directional Derivative of a convex function}
 \begin{Definition}[Directional derivative]
@@ -707,13 +1255,29 @@ which implies
     \end{enumerate}
     In particular, \( \partial f(\bar x) \) is nonempty.
 \end{Theorem}
+\marginnote{
+    \vspace{-10em}
+\begin{Remark}
+That said, for a proper convex function, the
+directional derivative is the support function (\Cref{def:support_fct}) of its subdifferential.
+\end{Remark}
+}
+
 \subsection{Continuity properties}
 The subdifferential operator of a closed, proper, and convex function has a closed graph.
-\begin{Corollary}[Outer semicontinuity of the subdifferential]
+\begin{Corollary}[Outer semicontinuity of convex subdifferential]
     Let \( f\in \Gamma_0 \) and suppose \( \{x_k\} \to x \) and 
     \( \{y_k \in \partial f(x_k)\} \to y \). Then \( y \in \partial f(x) \), i.e. the graph of \( \partial f \) is closed.
 \end{Corollary}
-Proof: By Fenchel-Young equality, we have \( f(x_k) + f^*(y_k) = \langle x_k, y_k \rangle \) for all \( k \). 
+\marginnote{
+    \vspace{-5em}
+
+    Outer semicontinuity provides control on the subdifferential.
+    For example, the indicator function of a closed set is 
+    outer semicontinuous but not continuous.
+}
+Proof: The proof relies on that Fenchel-Young equality holds under a limit, 
+we have \( f(x_k) + f^*(y_k) = \langle x_k, y_k \rangle \) for all \( k \). 
 On the other hand, by lsc of \( f \) and \( f^* \), we have
 \begin{align}
     f(x) + f^*(y) \leq \liminf_{k\to\infty} f(x_k) + \liminf_{k\to\infty} f^*(y_k) \leq \liminf_{k\to\infty} (f(x_k) + f^*(y_k)) = \liminf_{k\to\infty} \langle x_k, y_k \rangle = \langle x, y \rangle.
@@ -732,11 +1296,18 @@ A proper convex function is locally Lipschitz continuous on the interior of its 
 \end{Definition}
 Remark: every function that is locally Lipschitz at a point is also continuous at that point.
 
-If a function is locally Lipschitz at every point of a compact set, then it is globally Lipschitz on that set.
 
 \begin{Theorem}[Local Lipschitz continuity of a proper convex function]
     Let \( f\in \Gamma \) and \( \bar x \in \text{int}(\text{dom}(f)) \). Then \( f \) is locally Lipschitz continuous at \( \bar x \).
 \end{Theorem}
+\marginnote{    \vspace{-5em}
+\begin{Remark}
+    This implies that the jump discontinuity of a proper convex function 
+    can only happen at the boundary of its domain. 
+\end{Remark}
+}
+
+Moreover, if a function is locally Lipschitz at every point of a compact set, then it is globally Lipschitz on that set.
 
 \begin{Definition}[Domain of continuity]
     For a function \( f:\mathbb{E}\mapsto \mathbb{R}\cup \{+\infty\} \), we call the set
@@ -749,6 +1320,12 @@ If a function is locally Lipschitz at every point of a compact set, then it is g
 \begin{Corollary}
     Let \( f\in \Gamma \). Then \( \text{int}(\text{dom}(f)) = \text{cont}(f) \).
 \end{Corollary}
+\marginnote{
+    \vspace{-5em}
+    \begin{Remark}
+        \(\text{cont}(f) \subset \text{int}(\text{dom}(f))\) always holds for all extended-real valued functions.
+    \end{Remark}
+}
 
 \begin{Theorem}[Boundedness properties of the subdifferential]
     For \( f\in \Gamma \), the following holds:
@@ -811,6 +1388,12 @@ Differentiability on an open set implies continuous differentiability on that se
 \end{Corollary}
 
 \subsection{Subdifferential calculus}
+\begin{Proposition}[Scaling rule]
+    For \( f:\mathbb{E}\mapsto \mathbb{R}\cup \{+\infty\} \) and \( \lambda > 0 \), we have
+    \begin{align}
+        \partial (\lambda f)(x) = \lambda \partial f(x).
+    \end{align}
+\end{Proposition}
 \begin{Theorem}
     For all \( i \in I={1,\ldots,m} \), let \( f_i \in \Gamma\) and \( x \in \bigcap_{i=1}^m \text{int}(\text{dom}(f_i)) \).
     Set \( f = \max_{i\in I} f_i \) and \( I(x) = \{ i \in I : f_i(x) = f(x) \} \). Then
@@ -940,6 +1523,75 @@ Fenchel duality gives us the sum rule for subdifferential:
         \partial g(x) \times \partial h^*(y).
     \end{align}
 \end{Corollary}
+
+\section{Important results on common functions}
+Here we see how the theories are put together.
+\subsection{Logorithmic determinant function}
+\begin{Proposition}[Logorithmic determinant]
+    We equip the linear space \( \mathbb{S}^n \) 
+    of \( n\times n \) symmetric matrices with the inner product \( \langle X, Y \rangle = \text{tr}(XY) \)
+    and the induced norm \( \|X\|_F = \sqrt{\text{tr}(X^2)} \). 
+    Consider the function \( f: \mathbb{S}^n \to \overline{\mathbb{R}} \) defined by:
+    \begin{align}
+        f(X) = \begin{cases}
+        -\log\det(X), & X \in \mathbb{S}^n_{++} \\
+        +\infty, & \text{otherwise}
+        \end{cases}
+    \end{align}
+    We have that \begin{align}
+        \nabla f(X) &= -X^{-1}, \quad \forall X \in \mathbb{S}^n_{++}.\\
+            \nabla^2 f(X)[V] &= X^{-1} V X^{-1}, \quad \forall X \in \mathbb{S}^n_{++}, V \in \mathbb{S}^n.\\
+            \langle \nabla^2 f(X)[V], V \rangle &= \text{tr}(X^{-1} V X^{-1} V)\\
+             &= \|X^{-\frac{1}{2}} V X^{-\frac{1}{2}}\|_F^2
+            \ge 0, \quad \forall X \in \mathbb{S}^n_{++}, V \in \mathbb{S}^n.
+    \end{align}
+    namely, the logarithmic determinant is convex on \( \mathbb{S}^n_{++} \).
+\end{Proposition}
+\marginnote{Determinant of a square matrix 
+is the product of its eigenvalues. For a triangular
+or diagonal matrix, the determinant is the product of its diagonal entries.}
+
+\subsection{Indicator, distance, and norm}
+\subsubsection{Distance and indicator}
+\begin{Proposition}[Distance function obtained from Moreau envelope]
+    Let \( C \subset \mathbb{E} \) be nonempty, closed, and convex. Then the function 
+    \(d_C = \delta_C \# \|\cdot\|\) is 
+    called the distance function to the set \( C \), and is given by
+    \begin{align}
+        d_C(x) = \inf_{u\in C} \|x-u\|
+    \end{align}
+\end{Proposition}
+If \( C \) is closed and convex, the projection operator \( \text{proj}_C(x) = \arg\min_{u\in C} \|x-u\| \)
+is nonempty and single-valued, it follows that we have 
+\begin{align}
+    d_C(x) = \|x - \text{proj}_C(x)\|.
+\end{align}
+
+Moreover, by \Cref{prop:inf_conv_cvx}, \( d_C \) is convex as the infimal convolution of two convex functions.
+It is in fact globally Lipschitz continuous with modulus \( 1 \).
+
+\begin{Proposition}[Subdifferential of indicator function]
+    Let \( C \subset \mathbb{E} \) be nonempty, closed, and convex. Then for all \( x \in \mathbb{E} \), we have
+    \begin{align}
+        \partial \delta_C(x) = N_C(x) = \begin{cases}
+        \{0\}, & x \in \text{int}(C)\\
+        N_C(x), & x \in \text{bd}(C)\\
+        \emptyset, & x \notin C
+        \end{cases}
+    \end{align}
+\end{Proposition}
+
+\subsubsection{Norm}
+\begin{Proposition}[Conjugacy for norm]
+    Let \( \|\cdot\| \) be any norm on \( \mathbb{E} \) and \( \|\cdot\|_* \) be its dual norm.
+    Then we have \( \|\cdot\|^* = \delta_{\|\cdot\|_* \le 1} \), i.e. the conjugate of a norm is the indicator function of the unit ball of its dual norm.
+\end{Proposition}
+
+\begin{Proposition}
+    For \(f(x) = \frac12 \|x\|^2\), we have \( f^* = f\).
+\end{Proposition}
+
+
 
 % end of main text
 

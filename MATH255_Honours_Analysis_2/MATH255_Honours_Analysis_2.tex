@@ -271,6 +271,26 @@ For every \( n \in \mathbb{N} \),
     \end{align}
 \end{Example}
 
+
+\begin{Definition}[Power series]
+    Let \( (a_k)_k \) be a sequence in \( \mathbb{R} \) or
+    \( \mathbb{C} \) and \( x_0 \in \mathbb{R} \) or \( \mathbb{C} \).
+    The function \( x \mapsto \sum_{k=0}^{\infty}a_k(x-x_0)^k \) is 
+    defined at points where it converges, is called a power series.
+\end{Definition}
+
+\begin{Proposition}[Radius of convergence]
+    Let \( \sum_{k=0}^{\infty}a_k(x-x_0)^k \) be a power series in \( \mathbb{R} \) or \( \mathbb{C} \).
+    Define \(R = \frac{1}{\limsup_{k\to \infty} \sqrt[k]{|a_k|}}\) with the 
+    convention that \( \frac{1}{0} = \infty \) and \( \frac{1}{\infty} = 0 \).
+    Then \( R \) is called the radius of convergence of the power series, and
+    \begin{align}
+        &\text{if } |x-x_0| < R, \text{ then } \sum_{k=0}^{\infty}a_k(x-x_0)^k \text{ converges},\\
+        &\text{if } |x-x_0| > R, \text{ then } \sum_{k=0}^{\infty}a_k(x-x_0)^k \text{ diverges}.
+    \end{align}
+\end{Proposition}
+
+
 % end of main text
 
 \makeatletter
