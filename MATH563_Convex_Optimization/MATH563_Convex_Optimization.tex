@@ -1157,12 +1157,12 @@ Observe that any positive homogeneous function has \( h(0) = 0 \) and
 any sublinear function satisfies \( -h(x) \le h(0) + h(-x) \le h(x) \).
 
 \begin{Proposition}[Directional derivative of a convex function]
-    Let \( f\in \Gamma_0 \), \( x\in \text{dom}(f) \), and \( d \in \mathbb{E} \).
+    Let \( f\in \Gamma \), \( x\in \text{dom}(f) \), and \( d \in \mathbb{E} \).
     Define:
     \begin{align}
         t\in \mathbb{R} \setminus \{0\} \mapsto q(t) = \frac{f(x + td) - f(x)}{t}.
     \end{align}
-    then TFAE:
+    then the following hold:
     \begin{enumerate}
             \item \( q(-t) \leq q(-s) \leq q(s) \leq q(t) \) for all \( 0<s<t \).
             \item We have \( f'(x; d) = \inf_{t>0} q(t) \). In particular, \( f'(x; d) \) always exists in an extended real-valued sense.
@@ -1445,7 +1445,7 @@ Fenchel duality gives us the sum rule for subdifferential:
     and \( L \in \mathcal{L}(\mathbb{E}, \mathbb{E}) \), the following hold:
     \begin{enumerate}
         \item \( \partial (f + g\circ L)(x) \supset \partial f(x) + L^*(\partial g(L(x))) \) for all \( x \in \mathbb{E} \).
-        \item If \( f\in \Gamma_0(\mathbb{E}) \), \( g \in \Gamma_0(\mathbb{E}) \), and 
+        \item If \( f\in \Gamma(\mathbb{E}) \), \( g \in \Gamma(\mathbb{E}) \), and 
         the qualification condition \( 0 \in \text{int}(\text{dom}(g) - L(\text{dom}(f))) \) holds, 
         the equality holds, i.e. \( \partial (f + g\circ L)(x) = \partial f(x) + L^*(\partial g(L(x))) \) for all \( x \in \mathbb{E} \).
     \end{enumerate}
