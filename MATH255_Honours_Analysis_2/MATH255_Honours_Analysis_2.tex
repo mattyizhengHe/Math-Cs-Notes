@@ -291,6 +291,243 @@ For every \( n \in \mathbb{N} \),
 \end{Proposition}
 
 
+\begin{Example}
+For every \( x \in (0,2) \), we can write \( 
+\ln x = \sum_{k=1}^{\infty} \frac{(-1)^{k-1}}{k}(x-1)^k \).
+\end{Example}
+Indeed, let \(\tilde{\ln} x = \sum_{k=1}^{\infty} \frac{(-1)^{k-1}}{k}(x-1)^k\).
+We want to show that \( \tilde{\ln} x = \ln x \), i.e., 
+\(\tilde{\ln} e^y = y\) where \( y = \ln x \).
+Observe that 
+\begin{align}
+    \tilde{\ln}' (x) &= \sum_{k=1}^{\infty} (-1)^{k-1}(x-1)^{k-1} 
+    = \sum_{k=1}^{\infty} (1-x)^{k-1}\\
+    &= \sum_{k=0}^{\infty}(1-x)^{k} \\
+    &= \frac{1}{1-(1-x)} 
+    = \frac{1}{x}
+\end{align}
+More, this is true for all \( x \in (0,2) \) 
+since the radius of convergence of \(\sum_{k=0}^{\infty}(1-x)^k\) is 1.
+It follows that 
+\begin{align}
+    \frac{d}{dy}[\tilde{\ln} e^y - y] &= e^y\;\tilde{\ln}' e^y -1 = e^y\frac{1}{e^y} -1 = 0
+\end{align}
+hence \( \tilde{\ln} e^y - y = \tilde{\ln} e^0 - 0 = 0 \), 
+i.e. \( \tilde{\ln} x = \ln x \).
+\hfill\qedsymbol
+
+\begin{Definition}[Taylor series]
+    Let \( I \) be an interval in \( R \), \( x_0 \in I \)
+    and \( f: I \to \mathbb{R} \) be infinitely differentiable
+    at \( x_0 \). Then the series 
+    \begin{align}
+        \sum_{k=0}^{\infty}\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k
+    \end{align}
+    is called the Taylor series of \( f \) at \( x_0 \).
+\end{Definition}
+\marginnote{
+    We've proven that every power series 
+    \( 
+    f(x) = \sum_{k=0}^{\infty}a_k(x-x_0)^k
+    \)
+    is equal to its Taylor series at \( x_0 \in (x_0 - R, x_0 + R)\).
+
+    However, this is not true in general where \( f \) is 
+    only assumed to be infinitely differentiable at \( x_0 \). For example,
+    \begin{Example}
+        The function \(x \mapsto e^{-\frac{1}{x^2}}\) for \( x \neq 0 \) and \( 0 \) for \( x = 0 \)
+        is infinitely differentiable in \( \mathbb{R} \)
+        and such that \( f^{(k)}(0) = 0 \) for all \( k \in \mathbb{N} \).
+        That means that its Taylor series at \( 0 \) is the zero series.
+
+        Thus the function itself is not equal to its Taylor series at \( 0 \).
+    \end{Example}
+}
+
+\begin{Theorem}[Taylor's theorem with mean value reminder]
+    Let \( x, x_0 \in \mathbb{R} \), \( x \neq x_0 \), 
+    \(I = \begin{cases}
+        [x_0, x] & \text{if } x > x_0\\
+        [x, x_0] & \text{if } x < x_0
+    \end{cases}\), 
+    \( \text{int}(I) = \begin{cases}
+        (x_0, x) & \text{if } x > x_0\\
+        (x, x_0) & \text{if } x < x_0
+    \end{cases} \) and \( f: I \to \mathbb{R} \) be 
+    n times continuously differentiable in \( I \) (i.e. 
+    \( f^{(n) } \) exists and is continuous in \( I \)).
+    and \( n+1 \) times differentiable in \( \text{int}(I) \).
+    
+    Then, \(\exists x' \in \text{int}(I) \) such that
+    \begin{align}
+        f(x) = \underbrace{\sum_{k=0}^{n}\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k}_{\text{partial sum of Taylor series at \( x_0 \)}} 
+        + \underbrace{\frac{f^{(n+1)}(x')}{(n+1)!}(x-x_0)^{n+1}}_{\text{mean value reminder}}
+    \end{align}
+\end{Theorem}
+Define \(g(t) = f(x) = \sum_{k=0}^{n}\frac{f^{(k)}(t)}{k!}(t-t)^k \).
+We want to show that 
+\(g(x_0) = f(x) - \frac{1}{(n+1)!}f^{(n+1)}(x')(x-x_0)^{n+1}\) for some 
+\( x' \in \text{int}(I) \).
+
+In particular, \( g(x) = f(x) - f(x) = 0 \).
+
+\( g \) is continuous on \( I \) and differentiable on \( \text{int}(I) \) (
+    by assumption on \( f \)) and 
+\begin{align}
+    g'(t) &= \sum_{k=0}^{n}\frac{f^{(k+1)}(t)}{k!}(t-t)^k \\
+    &= \frac{f^{(n+1)}(t)}{n!}(t-t)^n \\
+    &= \frac{f^{(n+1)}(t)}{(n+1)!}(t-x_0)^{n+1} - \frac{f^{(n+1)}(t)}{(n+1)!}(t-x)^{n+1}
+\end{align}
+Now define 
+\begin{align}
+    h(t) = g(t)(x-x_0)^{n+1} - g(x_0)(x-t)^{n+1}
+\end{align}
+so that 
+\begin{align}
+    h(x) &= 0\\
+    h(x_0) &= 0
+\end{align}
+\marginnote{
+    The point here is to construct a function \( h \) such 
+    that it vanishes at both \( x \) and \( x_0 \) so that we can apply Rolle's theorem to it.
+}
+Since \( h \) is continuous on \( I \) and differentiable on \( \text{int}(I) \) 
+(by assumption on \( g \)), and 
+\begin{align}
+ h'(t) &= g'(t)(x-x_0)^{n+1}  + (n+1)g(x_0)(x-t)^n\\
+\end{align}
+By Rolle's Theorem, it follows that 
+\begin{align}
+    \exists x' \in \text{int}(I) \text{ such that } h'(x') = 0
+\end{align}
+
+\clearpage
+\section{Riemann-Stieltjes integral}
+\begin{Proposition}
+    \( f \in \mathcal{R}([a,b], \alpha) \) iff \( 
+    \forall \varepsilon>0 \), \(\exists P_\varepsilon\) (partition of 
+    \([a,b]\)) such that \( U(P_\varepsilon, f, \alpha) - L(P_\varepsilon, f, \alpha) < \varepsilon \).
+\end{Proposition}
+Proof: (\(\Rightarrow\)) Assume that \( f \in \mathcal{R}([a,b], \alpha) \).
+Then by properties of \( inf \) and \( sup \), \(\forall \varepsilon>0\), 
+\(\exists P_\varepsilon, P'_\varepsilon\) partition 
+of \([a,b]\) such that
+\begin{align}
+    \underline{\int_{a}^b} f(x)d\alpha  - \varepsilon < L(P_\varepsilon, f, \alpha) 
+    = \underline{\int_{a}^b} f(x)d\alpha \leq \overline{\int_{a}^b} f(x)d\alpha
+    \leq U(P_\varepsilon, f, \alpha) < \overline{\int_{a}^b} f(x)d\alpha + \varepsilon
+\end{align}
+Let \( P_\varepsilon^* = P_\varepsilon \cup P'_\varepsilon \).
+Then since \( P_\varepsilon^* \supset P_\varepsilon \) 
+and \( P_\varepsilon^* \supset P'_\varepsilon \),
+\begin{align}
+    U(P_\varepsilon^*, f, \alpha) - L(P_\varepsilon^*, f, \alpha)
+    &\leq U(P_\varepsilon', f, \alpha) - L(P_\varepsilon, f, \alpha)\\
+    &< (\overline{\int_{a}^b} f(x) d\alpha + \frac{1}{2}\varepsilon) - (\underline{\int_{a}^b} f(x)d\alpha - \frac{1}{2}\varepsilon)\\
+    &= \overline{\int_{a}^b} f(x) d\alpha - \underline{\int_{a}^b} f(x)d\alpha + \varepsilon\\
+    &= \varepsilon
+\end{align}
+where \( 
+\overline{\int_{a}^b} f(x) d\alpha - \underline{\int_{a}^b} f(x)d\alpha =0
+ \)
+since \( f \in \mathcal{R}([a,b], \alpha) \).
+
+\noindent (\(\Leftarrow\)) 
+Assume that \(\forall \varepsilon>0\), 
+\(\exists P_\varepsilon\) partition of \([a,b]\) 
+such that \( U(P_\varepsilon, f, \alpha) - L(P_\varepsilon, f, \alpha) < \varepsilon \).
+We have 
+\begin{align}
+    L(P_\varepsilon, f, \alpha) \leq \underline{\int_{a}^b} f(x)d\alpha
+    \leq \overline{\int_{a}^b} f(x)d\alpha \leq U(P_\varepsilon, f, \alpha)
+\end{align}
+It follows that 
+\begin{align}
+    0 \leq \overline{\int_{a}^b} f(x)d\alpha - \underline{\int_{a}^b} f(x)d\alpha 
+    \leq U(P_\varepsilon, f, \alpha) - L(P_\varepsilon, f, \alpha) \leq \varepsilon
+\end{align}
+Letting \( \varepsilon \to 0 \), we have
+\begin{align}
+    \overline{\int_{a}^b} f(x)d\alpha - \underline{\int_{a}^b} f(x)d\alpha = 0
+\end{align}
+therefore \( f \in \mathcal{R}([a,b], \alpha) \).
+\hfill\qedsymbol
+\marginnote{
+    Look at Question 2 in Assignment 6.
+}
+
+\begin{Proposition}
+    Let \( f, \alpha [a,b] \to \mathbb{R} \) 
+    be such that \( f \) is bounded in \([a,b]\)
+    and \( \alpha \) increasing on \([a,b]\).
+
+    Let \( D \) be the set of points in \([a,b]\) where \( f \) is
+    not continuous. Assume that \( D \) is countable
+    and that \( \alpha \) is continuous at every point in \( D \).
+    Then \( f \in \mathcal{R}([a,b], \alpha) \).
+\end{Proposition}
+Let \(\varepsilon>0\). For every \( x \in [a,b]\setminus D\), 
+since \( f \) is continuous at \( x \), there exists 
+\(\delta_x > 0 \) such that \( |f(y) - f(x)| < c\varepsilon \) for all \( y \in (x-\delta_x, x+\delta_x) \cap [a,b] \),
+where the constant \(c>0\) will be determined later.
+
+Since \( D \) is countable, \(\exists (x_k)_k \) in \([a,b]\) 
+such that \(D = \{x_k:k\in \mathbb{N}\}\).
+Since \( \alpha \) is continuous at \(x_k\), 
+there exists \( \delta_k > 0 \) such that 
+\( |\alpha(y) - \alpha(x_k)| < c_k\varepsilon \) 
+for all \( y \in (x_k - \delta_k, x_k + \delta_k) 
+\cap [a,b] \),
+where the constant \( c_k > 0 \) will be determined later.
+
+Since \( [a,b] \) is compact, 
+\( 
+    [a,b] \subset \bigcup_{x \in [a,b]} (x-\delta_x, x+\delta_x)
+\),
+\marginnote{
+    \(\delta_x\) is defined for every \( x \in [a,b] \), 
+    since either it's defined by the continuity of \( f \) at \( x \) (if \( x \in [a,b]\setminus D \)) or by the continuity of \( \alpha \) at \( x \) (if \( x \in D \)).
+}
+there exists a finite subcover, i.e. \(\exists y_1 < \cdots < y_{N_\varepsilon} \in [a,b] \)
+such that 
+\begin{align}
+    [a,b] \subset \bigcup_{i=1}^{N_\varepsilon}(y_i - \delta_{y_i}, y_i + \delta_{y_i})
+\end{align}
+By ordering the points 
+\(a,b,y_i-\delta_{\varepsilon, y} (\text{ if } \geq 0)\), 
+and \(y_i+\delta_{\varepsilon, y} (\text{ if } \leq b)\),
+we then obtain a partition \( P_\varepsilon = \{x_0, \cdots, x_{m_\varepsilon}\} \)
+such that  \(\forall j \in \{0, \cdots, m_\varepsilon\}\),
+\(\exists i \in \{1, \cdots, N_\varepsilon\}\) such 
+that \( (x_{j-1}, x_j) \subset (y_i - \delta_{y_i}, y_i + \delta_{y_i})\cap [a,b] \).
+
+We again separate this into two cases (depending on whether \( y_i \in D \) or not):
+\begin{itemize}
+    \item If \( y_i \not\in D\), then 
+    \begin{align}
+    M_j - m_j &= \sup_{x \in [x_{j-1}, x_j]}f(x) - \inf_{x \in [x_{j-1}, x_j]}f(x)\\
+    &\leq \left(
+    \sup_{x \in [x_{j-1}, x_j]}f(x) - f(y_i)\right) + \left(f(y_i) - \inf_{x \in [x_{j-1}, x_j]}f(x)\right)\\
+    &< 2c\varepsilon
+    \end{align}
+    \item If \( y_i \in D \), then we have
+    \begin{align}
+    M_j - m_j \leq M-m &= \sup_{x \in [x_{j-1}, x_j]}f(x) - \inf_{x \in [x_{j-1}, x_j]}f(x) 
+    \\
+    \Delta \alpha_j = \alpha(x_j) - \alpha(x_{j-1}) &\leq |\alpha(x_j) - \alpha(y_i)| + |\alpha(y_i) - \alpha(x_{j-1})|\\
+     &< 2c_k\varepsilon
+    \end{align}
+\end{itemize}
+Therefore, \begin{align}
+    U(P_\varepsilon, f, \alpha) - L(P_\varepsilon, f, \alpha)
+    &= \sum_{j=1}^{m_\varepsilon}(M_j - m_j)\Delta \alpha_j\\
+    &= \sum_{j=1, y_{i_j} \in D}^{m_\varepsilon}(M_j - m_j)\Delta \alpha_j + \sum_{j=1, y_{i_j} \not\in D}^{m_\varepsilon}(M_j - m_j)\Delta \alpha_j\\
+    &\leq 2c\varepsilon \underbrace{\sum_{j=1, y_{i_j} \not\in D}^{m_\varepsilon}\Delta \alpha_j}_{ss} + (M-m)\sum_{j=1, y_{i_j} \in D}^{m_\varepsilon}\Delta \alpha_j\\
+\end{align}
+
+
+
+
 % end of main text
 
 \makeatletter
