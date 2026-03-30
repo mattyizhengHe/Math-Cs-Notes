@@ -106,6 +106,9 @@
     textwidth=30em}]{Lemma} % Colorbox-styled Lemma
 \declaretheorem[shaded={rulecolor=Lavender,
     rulewidth=2pt, bgcolor={rgb}{1,1,1}}]{Example-1} % Colorbounded-styled Theorem
+\declaretheorem[shaded={bgcolor=PeachPuff,
+    textwidth=22em}]{Remark} % Colorbox-styled Proposition
+% set up pdf bookmark depth
 \declaretheorem[thmbox=L]{boxtheorem L} % Theorem box L-size
 \declaretheorem[thmbox=M]{Example} % Theorem box M-size
 \declaretheorem[thmbox=S]{Formula} % Theorem box S-size
@@ -129,6 +132,160 @@
 
 % main text
 \section{Metric Spaces}
+\subsection{Openness and closedness}
+\subsection{Convergence, completeness and compactness}
+
+\begin{Definition}[Limit and convergence]
+    Let \((X, d)\) be a metric space, \( x \in X \), and \( (x_k)_{k\in \mathbb{N}} \) be
+    a sequence of elements in \( X \). 
+    We say that \((x_k)_k\) converges to \( x \) in \( (X, d) \) if
+    and we denote \(\lim_{k\to\infty}x_k = x\) or \( x_k \to x \) as \( k \to \infty \) if
+    \begin{align}
+        \forall \varepsilon > 0, \; \exists k_\varepsilon \in \mathbb{N} \text{ such that } 
+        \forall k \geq k_\varepsilon, d(x_k, x) < \varepsilon
+    \end{align}
+    Moreover, \( x \) is called the limit of the sequence \( (x_k)_k \) in \( (X, d) \).
+\end{Definition}
+
+
+\begin{Proposition}
+    Let \((X,d)\) be a metric space, \( x \in X \), and \(A \subseteq X\). Then 
+    \(x\in \overline A\) iff there exists a sequence \( (x_k)_k \) in \( A \) such that \( \lim_{k\to \infty} x_k = x \).
+\end{Proposition}
+
+\begin{Theorem}[Sequential Criterion for Closedness]
+    Let \((X, d)\) be a metric space and \( A \subseteq X \). Then the following statements are equivalent:
+    \begin{itemize}
+        \item \( A \) is closed in \( (X, d) \).
+        \item For every \( x\in X \) and \((x_k)_{k\in \mathbb{N}}\) sequence of elements in \( A \), \\
+        if \(\lim_{k\to \infty} x_k = x\) in \( (X, d) \), then \( x \in A \).
+    \end{itemize}
+\end{Theorem}
+
+\begin{Definition}[Cauchy sequence]
+    Let \((X, d)\) be a metric space and \( (x_k)_{k\in \mathbb{N}} \) be a sequence of elements in \( X \).
+    We say that \((x_k)_k\) is a Cauchy sequence in \( (X, d) \) if
+    \begin{align}
+        \forall \varepsilon > 0, \; \exists k_\varepsilon \in \mathbb{N} \text{ such that } 
+        \forall m, n \geq k_\varepsilon, d(x_m, x_n) < \varepsilon
+    \end{align}
+\end{Definition}
+
+\begin{Proposition}
+    Every converging sequence in \((X, d)\) is a Cauchy sequence in \( (X, d) \).
+\end{Proposition}
+
+\begin{Definition}[Completeness, Banach and Hilbert space]
+    We say that a metric space \((X, d)\) is complete if every 
+    Cauchy sequence in \( (X, d) \) converges to some limit in \( (X, d) \).
+    \begin{itemize}
+        \item A complete normed vector space is called a Banach space.
+        \item A complete inner product space is called a Hilbert space.
+    \end{itemize}
+\end{Definition}
+
+\begin{Proposition}
+    Let \((X,d)\) be a metric space and \(Y\subseteq X\),
+    \begin{enumerate}
+        \item If \((Y,d)\) is complete, then \(Y\) is closed in \((X,d)\).
+        \item If \((X,d)\) is complete and \( Y \) is closed in \((X,d)\), then \((Y,d)\) is complete.
+    \end{enumerate}
+\end{Proposition}
+
+
+\begin{Definition}[Compactness]
+    Let \((X, d)\) be a metric space and \( A \subseteq X \). 
+    We say that \( A \) is compact (or sequentially compact) in \( (X, d) \) if for every
+    sequence \( (x_k)_{k\in \mathbb{N}} \) of elements in \( A \),
+    there exists \( x \in A \) and a subsequence \( (x_{k_j})_{j\in \mathbb{N}} \) such that 
+    \(\lim_{j\to \infty} x_{k_j} = x\) in \( (X, d) \).
+
+    If this is true for \(A = X\), then we say that \((X, d)\) is compact (or sequentially compact).
+\end{Definition}
+\marginnote{
+    Compactness forces convergence and existence of limits.
+}   
+
+\begin{Proposition}
+    Let \((X, d)\) be a compact metric space and \( A \subseteq X \). 
+    Then \( A \) is compact in \( (X, d) \) iff \( A \) is closed in \( (X, d) \).
+\end{Proposition}
+
+\begin{Theorem}[Heine-Borel Theorem]
+    Let \(X, \|\cdot\|\) be a normed vector space of finite
+    dimension and \( A \subseteq X \). 
+    Then, \( A \) is compact in \( (X, \|\cdot\|) \) iff \( A \) is closed and bounded in \( (X, \|\cdot\|) \).
+\end{Theorem}
+
+\begin{Proposition}[Finite subcover of compact sets]
+    \hfill\newline
+    Let \((X, d)\) be a metric space and \( A \subseteq X \). 
+    If \( A \) is compact in \( (X, d) \), then for every collection 
+    \(\{U_i\}_{i \in I}\) of open subsets of \( (X, d) \) such that \( A \subseteq \bigcup_{\alpha \in I} U_\alpha \),
+    there exists a finite sub-collection \(\{U_{i_{j}}\}_{1 \leq j \leq N}\) where \( N \in \mathbb{N} \) and 
+    \( i_j \in I \) for all \( 1 \leq j \leq N \) such that \( A \subseteq \bigcup_{j=1}^{N} U_{i_j} \).
+\end{Proposition}
+
+
+\begin{Corollary}
+    Let \((X,d)\) be a metric space and \( A \subseteq X \). 
+    If \( A \) is compact in \( (X, d) \), then for every \(r>0\), 
+    there exists a finite number \(N_r \in \mathbb{N}\) of elements \( x_1, \cdots, x_{N_r} \in A \) such 
+    that \( 
+    A \subseteq \bigcup_{j=1}^{N_r} B(x_j, r)
+    \).
+\end{Corollary}
+
+\begin{Corollary}
+    Let \((X, \|\cdot\|)\) be a normed vector space of infinite dimension. 
+    Then, the closed unit ball \( \{x \in X: \|x\| \leq 1\} \) is not compact in \( (X, \|\cdot\|) \).
+    (Hence the Heine-Borel theorem does not hold in infinite dimension.)
+\end{Corollary}
+
+\begin{Proposition}
+    Every normed vector space of finite dimension is Banach.
+\end{Proposition}
+
+\subsection{Mapping between metric spaces}
+\begin{Definition}[Cluster point]
+    \hfill \newline
+    Let \( (X, d) \) be a metric space, \( A \subseteq X \), and \( x_0 \in X \).\\ 
+    We say that \( x_0 \) is a cluster point of \( A \) in \( (X, d) \) if 
+    \( x_0 \in \overline{A\setminus \{x_0\}} \).
+\end{Definition}
+
+\begin{Proposition}
+    \hfill\newline
+    \( x_0 \) is a cluster point of \( A \) iff there exists a sequence 
+    \( (x_k)_{k\in \mathbb{N}} \) in \( A \) such that 
+    \(\lim_{k\to \infty} x_k = x_0\) and \( x_k \neq x_0 \) for all \( k \in \mathbb{N} \).
+\end{Proposition}
+
+\begin{Definition}[Limit of function value]
+    Let \( (X, d_X) \) and \( (Y, d_Y) \) be two metric spaces, \( A \subseteq X \), \( x_0\) be a 
+    cluster point of \( A \) and \( y_0 \in Y \).
+    \begin{enumerate}
+        \item For \(f:A\to Y\), we say that \( f(x) \) converges to \( y_0 \) as \( x\to x_0 \)
+         and we denote \(\lim_{x \to x_0}f(x) = y_0\) if 
+         \begin{align}
+            \forall \varepsilon > 0, \; \exists \delta_\varepsilon > 0:\;
+            \forall x \in A, 0 < d_X(x, x_0) < \delta_\varepsilon\Rightarrow d_Y(f(x), y_0) < \varepsilon
+         \end{align}
+        \item When \( (Y, d_Y) = (\mathbb{R}, |\cdot|) \), for \( f:A\to \mathbb{R} \), we say that 
+        \( f(x)\) tends to \( \pm\infty \) as \( x \to x_0 \) and we denote \(\lim_{x \to x_0}f(x) = \pm\infty\) if
+        \begin{align}
+            \forall M > 0, \; \exists \delta_M > 0:\;
+            \forall x \in A, 0 < d_X(x, x_0) < \delta_M\Rightarrow f(x) > M \text{ or } f(x) < -M
+        \end{align}
+    \end{enumerate}
+\end{Definition}
+
+
+
+
+
+
+
 \subsection{Continuous functions on compact sets}
 
 \section{Infinite Series}
@@ -148,6 +305,128 @@
     \( S \) is its sum. If \((S_n)_{n\geq k_0}\) does not converge, 
     then we say that the series \( \sum_{k=k_0}^{\infty}a_k \) diverges.
 \end{Definition}
+\marginnote{
+    \vspace{-10em}
+    \begin{Remark}[Examples]
+    \hfill\newline
+        \begin{itemize}
+            \item \textbf{Geometric series}
+            \(a_k = r^k\) for some \( r \in \mathbb{R} \),
+            \begin{align}
+                S_n = \sum_{k=0}^{n}r^k = 
+                \begin{cases}
+                \dfrac{1-r^{n+1}}{1-r} & \text{if } r \neq 1\\
+                n+1 & \text{if } r = 1
+                \end{cases}
+            \end{align}
+            It converges iff \( |r| < 1 \) with \(S = \frac{1}{1-r}\) 
+            since \( \lim_{n \to \infty}r^{n+1} = 0 \) when \( |r| < 1 \).
+            \item \textbf{Series of matrices}
+            For example, \(\sum_{k=0}^{\infty}A^k = (I-A)^{-1}\) for all 
+            \( n \times n \) real value matrices such that \( \|A\|_{2,2} = \max_{\|x\|_2 = 1}\|Ax\|_2 < 1 \).
+             \item \textbf{p-series}
+             \(\sum_{k=1}^{\infty} \frac{1}{k^\alpha}\) converges iff \( \alpha > 1 \).
+        \end{itemize}
+    \end{Remark}
+}
+
+\begin{Proposition}
+    \( \forall \; k_0' > k_0 \), \(\sum_{k=k_0}^{\infty}a_k\) converges iff \(\sum_{k=k_0'}^{\infty}a_k\) converges.
+    Therefore, we will sometimes assume without loss of generality that \( k_0 = 0 \) or \(1 \) .
+\end{Proposition}
+Proof: 
+\(\forall n \geq k_0'\), 
+\(\sum_{k=k_0}^{n} a_k = \sum_{k=k_0'}^{n} a_k + \sum_{k=k_0}^{k_0'-1}a_k\)
+where the second term is independent of \( n \).
+Hence, \(\sum_{k=k_0}^{\infty}a_k\) converges iff \(\sum_{k=k_0'}^{\infty}a_k\) converges.
+
+\hfill\qedsymbol
+
+\begin{Proposition}
+    If \(\sum_{k=k_0}^{\infty}a_k\) converges, then \( a_k \to 0 \) as \( k \to \infty \).
+\end{Proposition}
+Proof: If \(\sum_{k=k_0}^{\infty}a_k\) converges, then \( a_n = S_n - S_{n-1} \to S - S = 0 \) as \( n \to \infty \).
+\hfill\qedsymbol
+
+\begin{Proposition}
+    If \(\sum_{k=k_0}^{\infty}a_k\) and \(\sum_{k=k_0}^{\infty}b_k\) converge, 
+    then \(\forall \lambda, \mu \in \mathbb{R}\) or \( \mathbb{C} \),
+    \(\sum_{k=k_0}^{\infty}(\lambda a_k + \mu b_k) \to 
+    \lambda \sum_{k=k_0}^{\infty}a_k + \mu \sum_{k=k_0}^{\infty}b_k\).
+\end{Proposition}
+Proof follows from \(
+\sum_{k=k_0}^{n}(\lambda a_k + \mu b_k) = \lambda \sum_{k=k_0}^{n}a_k + \mu \sum_{k=k_0}^{n}b_k
+\).
+\hfill \qedsymbol
+
+\begin{Theorem}[Cauchy criterion for convergence]
+    If \((X, \|\cdot\|)\) is Banach, then \(\sum_{k=k_0}^{\infty}a_k\) converges iff
+    \(\forall \varepsilon > 0\), \(\exists n_\varepsilon \in \mathbb{N}\) such that
+    \begin{align}
+        \forall m > n \geq n_\varepsilon, \; \|\sum_{k=n+1}^{m}a_k\| < \varepsilon
+    \end{align}
+\end{Theorem}
+Proof: If \((X, \|\cdot\|)\) is Banach, then \((S_n)_{n\geq k_0}\), 
+\(S_n = \sum_{k=k_0}^{n}a_k\) converges iff it is Cauchy, i.e.
+\(\forall \varepsilon > 0\), \(\exists n_\varepsilon \in \mathbb{N}\) such that
+\begin{align}
+    \forall m > n \geq n_\varepsilon, \; \|S_m - S_n\|= \|\sum_{k=n+1}^{m}a_k\|
+     < \varepsilon
+\end{align}
+\hfill \qedsymbol
+
+\begin{Definition}[Absolute and conditional convergence]
+    \(\sum_{k=k_0}^{\infty}a_k\) is said to be absolutely convergent if 
+    \(\sum_{k=k_0}^{\infty}\|a_k\|\) converges in \((\mathbb{R}, \|\cdot\|)\).
+    It is said to be conditionally convergent if \(\sum_{k=k_0}^{\infty}a_k\) converges but 
+    \(\sum_{k=k_0}^{\infty}\|a_k\|\) diverges.
+\end{Definition}
+\marginnote{
+    \vspace{-8em}
+    \begin{Remark}
+        \hfill\newline
+        \(\tilde{S}_n = \sum_{k=k_0}^{n}\|a_k\|\) is nondecreasing: \(\tilde{S}_{n+1}  \geq \tilde{S}_n\)
+        for all \( n \in \mathbb{N} \). 
+        
+        Hence, \(\tilde{S}_n = \sum_{k=k_0}^{n}\|a_k\|\)
+        converges iff \((\tilde{S}_n)_{n\geq k_0} \) is bounded. 
+        Moreover, \(\sum_{k=k_0}^{\infty}\|a_k\| = \sup_{n \geq k_0} \tilde{S}_n\).
+    \end{Remark}
+}
+
+\begin{Proposition}
+    If \((X, \|\cdot\|)\) is Banach, then for every series 
+    \(\sum_{k=k_0}^{\infty}a_k\) in \( (X, \|\cdot\|) \), 
+    if \(\sum_{k=k_0}^{\infty}\|a_k\|\) converges absolutely,
+    then \(\sum_{k=k_0}^{\infty}a_k\) converges and
+    \begin{align}
+        \|\sum_{k=n}^{\infty}a_k\| \leq \sum_{k=n}^{\infty}\|a_k\|, \quad \forall n \geq k_0
+    \end{align}
+\end{Proposition}
+
+\marginnote{
+\vspace{-8em}
+\begin{Remark}
+    \hfill\newline
+    The converse is true, if \(\forall \sum a_k\) that converges absolutely,
+    \(\sum a_k\) converges, then \((X, \|\cdot\|)\) is Banach.
+\end{Remark}
+}
+
+
+\begin{Proposition}
+    Let \( 
+    \sum_{k=k_0}^{\infty}a_k \) be a series in a Banach space \( (X, \|\cdot\|) \).
+    If \(\sum_{k=k_0}^{\infty}a_k\) converges absolutely, then for every bijective function 
+    \(f: \{k \geq k_0\} \to \{k \geq k_0\}\) (permutation), 
+    the series \(\sum_{k=k_0}^{\infty}a_{f(k)}\) converges and
+    \begin{align}
+        \sum_{k=k_0}^{\infty}a_{f(k)} = \sum_{k=k_0}^{\infty}a_k
+    \end{align}
+    We call the series \( \sum_{k=k_0}^{\infty}a_{f(k)} \) a rearrangement of \( \sum_{k=k_0}^{\infty}a_k \).
+\end{Proposition}
+
+
 
 \subsection{Series with nonnegative term}
 \begin{Theorem}[Direct Comparison Test]
