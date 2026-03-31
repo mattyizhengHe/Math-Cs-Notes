@@ -433,7 +433,8 @@ Proof: If \((X, \|\cdot\|)\) is Banach, then \((S_n)_{n\geq k_0}\),
     Let \( \sum_{k=k_0}^{\infty}a_k \) and \( \sum_{k=k_0}^{\infty}b_k \) be two series in \( (\mathbb{R},\|\cdot\|) \)
     such that \( 0 \leq a_k \leq b_k \) for all \( k \geq k_0 \). Then
     \begin{enumerate}
-        \item If \(\sum_{k=k_0}^{\infty}b_k\) converges, then \(\sum_{k=k_0}^{\infty}a_k\) converges and 
+        \item If \(\sum_{k=k_0}^{\infty}b_k\) converges, \\
+        then \(\sum_{k=k_0}^{\infty}a_k\) converges and 
         \(\sum_{k=k_0}^{\infty}a_k \leq \sum_{k=k_0}^{\infty}b_k\).
         \item If \(\sum_{k=k_0}^{\infty}a_k\) diverges, then \(\sum_{k=k_0}^{\infty}b_k \) diverges.
     \end{enumerate}
@@ -449,11 +450,17 @@ Proof: If \((X, \|\cdot\|)\) is Banach, then \((S_n)_{n\geq k_0}\),
 \end{Corollary}
 
 \begin{Theorem}[Root Test]
-    
+    Let \( \sum_{k=k_0}^{\infty}a_k \) be a series in \( (\mathbb{R},\|\cdot\|) \)
+    such that \( a_k \geq 0\) for all \( k \geq k_0 \).
+    \begin{enumerate}
+        \item If \( \limsup_{k \to \infty}\sqrt[k]{a_k} < 1 \), then \( \sum_{k=k_0}^{\infty}a_k \) converges.
+        \item If \( \limsup_{k \to \infty}\sqrt[k]{a_k} > 1 \), then \( \sum_{k=k_0}^{\infty}a_k \) diverges.
+    \end{enumerate}
+    If \( \limsup_{k \to \infty}\sqrt[k]{a_k} = 1 \), then the test is inconclusive.
 \end{Theorem}
 
 
-\begin{Proposition}
+\begin{Proposition}[Ratio Test]
     Let \( \sum_{k=k_0}^{\infty}a_k \) be a series in \( (\mathbb{R},\|\cdot\|) \)
     such that \( a_k >0 \) for all \( k \geq k_0 \).
     \begin{enumerate}
@@ -485,6 +492,7 @@ i.e. \( a_{k+1} > a_k\), which implies
 \( \sum_{k=k_0}^{\infty}a_k \) diverges.
 \hfill\qedsymbol
 
+\subsection{Power series}
 Now we focus on series in \( (\mathbb{R},|\cdot|) \) with terms of different sign.
 \begin{Theorem}[Alternating Series Test]
     Let \( \sum_{k=k_0}^{\infty}a_k \) be a series in \( (\mathbb{R},|\cdot|) \)
@@ -568,6 +576,14 @@ For every \( n \in \mathbb{N} \),
         &\text{if } |x-x_0| > R, \text{ then } \sum_{k=0}^{\infty}a_k(x-x_0)^k \text{ diverges}.
     \end{align}
 \end{Proposition}
+
+\begin{Proposition}
+    Let \( f(x) =\sum_{k=0}^{\infty}a_k(x-x_0)^k \) be a power series in \( (\mathbb{R}, |\cdot|) \) 
+    with the radius of convergence \( R > 0 \). 
+    Then \( f \) is infinitely differentiable in \( (x_0 - R, x_0 + R) \) 
+    
+\end{Proposition}
+
 
 
 \begin{Example}

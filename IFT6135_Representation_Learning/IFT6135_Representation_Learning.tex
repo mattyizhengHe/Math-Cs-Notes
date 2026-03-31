@@ -400,7 +400,21 @@ or \textbf{autoregressive flows}, which create a triangular Jacobian.
 \paragraph{Autoregressive flows}
 
 
+\subsection{Continuous flows}
+The methods we discussed in this section are all 
+considered discrete normalizing flows, which 
+use a finite sequence of invertible transformations to map between the latent and data space (represented 
+by discrete number of layers in the model).
+Continuous normalizing flows (CNFs) model the transformation as a continuous-time dynamic system,
+through neural ordinary differential equations (ODEs).
+Early methods include FFJORD are simulation-based and computationally expensive,
+they are followed by the flow matching frameworks,
+which solve the scalability issue by directly learning 
+the vector field of the ODEs, allowing for simulation-free training.
 
+Flow matching bridges the gap between normalizing flows and diffusion models.
+
+\subsection{Summary and big picture}
 
 
 
