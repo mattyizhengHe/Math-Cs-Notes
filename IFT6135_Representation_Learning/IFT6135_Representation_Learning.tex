@@ -403,18 +403,37 @@ or \textbf{autoregressive flows}, which create a triangular Jacobian.
 \subsection{Continuous flows}
 The methods we discussed in this section are all 
 considered discrete normalizing flows, which 
-use a finite sequence of invertible transformations to map between the latent and data space (represented 
+use a finite sequence of invertible transformations to 
+map between the latent and data space (represented 
 by discrete number of layers in the model).
 Continuous normalizing flows (CNFs) model the transformation as a continuous-time dynamic system,
-through neural ordinary differential equations (ODEs).
+through neural ordinary differential equations (ODEs). 
+They have become increasingly popular in recent years.
+
 Early methods include FFJORD are simulation-based and computationally expensive,
 they are followed by the flow matching frameworks,
 which solve the scalability issue by directly learning 
 the vector field of the ODEs, allowing for simulation-free training.
 
 Flow matching bridges the gap between normalizing flows and diffusion models.
+\href{https://diffusion.csail.mit.edu/2026/index.html}{\color{blue}{Reference for further reading}}.
+
 
 \subsection{Summary and big picture}
+
+
+\section{Variational autoencoders (VAEs)}
+\paragraph{
+Autoencoder as generative models
+}
+We consider an autoencoder with some loss function. If we can recover the distribution \( p(H) \) of 
+the hidden units \( H \), then sampling \( H\sim p(H) \) and pushing it through the 
+decoder will return the data distribution \( p(X) \) in the observation space.
+
+In fact, this construction is considered as a more general framework of generative modeling--latent variable models,
+where we learn a mapping from some latent variable \( z \) to a complicated distribution on the data space \( x \).
+
+
 
 
 

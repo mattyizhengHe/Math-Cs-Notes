@@ -130,10 +130,68 @@
 \noindent Abstract
 \end{abstract}
 
+\tableofcontents
+
 % main text
 \section{Metric Spaces}
-\subsection{Openness and closedness}
-\subsection{Convergence, completeness and compactness}
+\subsection{Openness and closeness}
+We first gives the definition of openness and closeness of sets in metric spaces, 
+and we aim to layout all their equivalent characterizations as fast as possible.
+
+\begin{Definition}[Open and closed sets]
+    Let \( (X,d) \) be a metric space and \( A \subseteq X \).
+    \begin{enumerate}
+        \item We say that \( A \) is open in \( (X,d) \) if for every \( x \in A\), there exists \( r > 0 \) such that \(B(x, r) \subseteq A \).
+        \item We say that \( A \) is closed in \( (X, d) \) if \( X \setminus A \) is open in \( (X, d) \).
+    \end{enumerate}
+\end{Definition}
+\marginnote{
+    \begin{Remark}
+        The whole space \( X \) and the empty set \( \emptyset \) are both open and closed in \( (X, d) \).
+    \end{Remark}
+}
+
+\begin{Definition}[Closure, interior, and boundary]
+    Let \((X, d)\) be a metric space and \( A \subseteq X \).
+    \begin{enumerate}
+        \item We call the closure of \( A \) in \( (X,d) \) the set \( \overline{A} \) of all 
+        points in \( X \) such that \( \forall r>0 \), \( B(x, r) \cap A \neq \emptyset \).
+        \item We call the interior of \( A \) in \( (X, d) \) the set \( Int(A) \) of all points in \( A \) such that
+        \( \exists r > 0 \) such that \( B(x, r) \subseteq A \).
+        \item We call the boundary of \( A \) in \( (X, d) \) the set \( \partial A = \overline{A} \setminus Int(A) \).
+    \end{enumerate}
+\end{Definition}
+
+Some basic characterizations of the openness and closeness of sets using the definitions of closure and interior are as follows:
+\begin{Theorem}[Open set and interior]
+    Let \((X, d)\) be a metric space and \( A \subseteq X \). Then the following holds:
+    \begin{enumerate}
+        \item \( Int(A) \subseteq A \).
+        \item \( Int(A) \) is open in \( (X, d) \).
+        \item \(B \subset Int(A)\) for every open set \( B \subseteq A \) in \( (X, d) \).
+        \item Thus, \( Int(A) \) is the largest open set in \( (X, d) \) contained in \( A \).
+    \end{enumerate}
+    Moreover, \( A \) is open in \( (X, d) \) iff \( Int(A) = A \).
+\end{Theorem}
+
+\begin{Theorem}[Closed set and closure]
+    Let \((X, d)\) be a metric space and \( A \subseteq X \). Then the following holds:
+    \begin{enumerate}
+        \item \( A \subseteq \overline{A} \).
+        \item \( \overline{A} \) is closed in \( (X, d) \).
+        \item \( B \supseteq \overline{A} \) for every closed set \( B \supseteq A \) in \( (X, d) \).
+        \item Thus, \( \overline{A} \) is the smallest closed set in \( (X, d) \) containing \( A \).
+    \end{enumerate}
+    Moreover, \( A \) is closed in \( (X, d) \) iff \( A = \overline{A} \).
+\end{Theorem}
+
+
+
+\paragraph{Convergence with open and close sets}
+To show further characterizations of the openness and closeness,
+
+we need to first define the limit and convergence 
+of sequences in metric spaces.
 
 \begin{Definition}[Limit and convergence]
     Let \((X, d)\) be a metric space, \( x \in X \), and \( (x_k)_{k\in \mathbb{N}} \) be
@@ -146,12 +204,67 @@
     \end{align}
     Moreover, \( x \) is called the limit of the sequence \( (x_k)_k \) in \( (X, d) \).
 \end{Definition}
+\marginnote{
+    \begin{Remark}
+        Let \( (X, d) \) be a metric space and \( (x_k)_k \) be a sequence in \( X \). 
+        \begin{enumerate}
+            \item \(\lim_{k\to\infty} x_k = x\)in \( (X,d) \) iff \( \lim_{k\to\infty}d(x_k,x) = 0\) as a sequence in \( (\mathbb{R}, |\cdot|) \).
+            \item If \(\lim_{k\to\infty} x_k = x\) in \( (X, d) \), then it's unique
+            \item Every subsequence of \( (x_k)_k \) also converges to the same limit \( x \) in \( (X, d) \).
+        \end{enumerate}
+    \end{Remark}
+}
 
+\begin{Definition}[Cluster point (limit point)]
+    \hfill \newline
+    Let \( (X, d) \) be a metric space, \( A \subseteq X \), and \( x_0 \in X \).\\ 
+    We say that \( x_0 \) is a cluster point of \( A \) in \( (X, d) \) if 
+    \( x_0 \in \overline{A\setminus \{x_0\}} \).
+\end{Definition}
 
+\begin{Proposition}
+    A point \( x_0 \) is a cluster point of a set \( A \) iff every open ball \( B(x_0, r) \) intersects \( A \setminus \{x_0\} \)
+    (namely, contains a point \( x \) of \( A \) such that \( x \neq x_0 \)).
+    We note that \( x_0 \) may not be in \( A \).
+\end{Proposition}
+
+\begin{Proposition}
+    \hfill\newline
+    \( x_0 \) is a cluster point of \( A \) iff there exists a sequence 
+    \( (x_k)_{k\in \mathbb{N}} \) in \( A \) such that 
+    \(\lim_{k\to \infty} x_k = x_0\) and \( x_k \neq x_0 \) for all \( k \in \mathbb{N} \).
+\end{Proposition}
+
+\begin{Definition}[Isolated point]
+    Let \((X, d)\) be a metric space, \( A \subseteq X \), and \( x_0 \in A \).
+    We say that \( x_0 \) is an isolated point of \( A \) in \( (X, d) \) if
+    there exists \( r > 0 \) such that \( B(x_0, r) \cap A = \{x_0\} \).
+\end{Definition}
+
+\paragraph{Additional characterizations}
+We can not show more characterizations of the openness and closeness of sets:
+\begin{Definition}[Derived set]
+    Let \((X, d)\) be a metric space, \( A \subseteq X \). The derived set 
+of \( A \) in \( (X, d) \) is the set \( A' \) of all cluster points of \( A \) in \( (X, d) \).
+\end{Definition}
+\begin{Proposition}
+    Let \((X, d)\) be a metric space and \( A \subseteq X \). Then
+    the closure of \( A \) in \( (X, d) \) is the union of \( A \) and and its derived set, 
+    i.e. \( \overline{A} = A \cup A' \).
+\end{Proposition}
+
+\begin{Theorem}[Close sets in metric spaces]
+    For a metric space \( (X, d) \) and \( A \subseteq X \), then
+    the set \( A \) is closed iff \( A \) contain all of its cluster points.
+\end{Theorem}
+
+We now characterize the closeness of sets using the convergence of sequences:
 \begin{Proposition}
     Let \((X,d)\) be a metric space, \( x \in X \), and \(A \subseteq X\). Then 
     \(x\in \overline A\) iff there exists a sequence \( (x_k)_k \) in \( A \) such that \( \lim_{k\to \infty} x_k = x \).
 \end{Proposition}
+
+
 
 \begin{Theorem}[Sequential Criterion for Closedness]
     Let \((X, d)\) be a metric space and \( A \subseteq X \). Then the following statements are equivalent:
@@ -161,6 +274,47 @@
         if \(\lim_{k\to \infty} x_k = x\) in \( (X, d) \), then \( x \in A \).
     \end{itemize}
 \end{Theorem}
+
+
+More properties of open and closed sets includes:
+\begin{Proposition}[Union and intersection of open set]
+    Let \((X, d)\) be a metric space,
+    \begin{enumerate}
+        \item The intersection of any family \( \mathcal{F} \) of open sets in \( (X, d) \) is open in \( (X, d) \).
+        \item The union of any family \( \mathcal{F} \) of open sets in \( (X, d) \) is open in \( (X, d) \).
+    \end{enumerate}
+\end{Proposition}
+
+\begin{Proposition}[Union and intersection of closed set]
+    Let \((X, d)\) be a metric space,
+    \begin{enumerate}
+        \item 
+    The intersection of any family \( \mathcal{F} \) of closed sets in \( (X, d) \) is closed in \( (X, d) \).
+    \item The union of any finite family \( \mathcal{F} \) of closed sets in \( (X, d) \) is closed in \( (X, d) \).
+    \end{enumerate}
+\end{Proposition}
+
+\begin{Proposition}[Set difference of open and closed sets]
+    Let \((X, d)\) be a metric space,
+    \begin{enumerate}
+        \item If \( A_1 \) is an open set in \( X \) and \( A_2 \) is a closed set, then \( A_1\setminus A_2 \) is open in \( (X,d) \).
+        \item If \(A_1\) is a closed set and \( A_2 \) is an open set in \( (X, d) \), then \( A_1\setminus A_2 \) is closed in \( (X, d) \).
+    \end{enumerate}
+\end{Proposition}
+
+More characterizations of interior and closure:
+\begin{Proposition}
+    Let \( (X,d) \) be a metric space and \( A\subseteq X \)
+    \begin{enumerate}
+        \item \( \overline{X \setminus A} = X\setminus Int(A)\), and we have \(Int(X \setminus A) = X\setminus \overline{A}\).
+        \item \( \partial A = \overline{A} \setminus Int(A) = \overline{A} \cap \overline{X\setminus A}\).
+    \end{enumerate}
+\end{Proposition}
+Thus, boundary is the two-way limit point, it's both a limit point of \( A \) and a limit point of \( X \setminus A \).
+
+
+
+\subsection{Completeness and compactness}
 
 \begin{Definition}[Cauchy sequence]
     Let \((X, d)\) be a metric space and \( (x_k)_{k\in \mathbb{N}} \) be a sequence of elements in \( X \).
@@ -247,19 +401,7 @@
 \end{Proposition}
 
 \subsection{Mapping between metric spaces}
-\begin{Definition}[Cluster point]
-    \hfill \newline
-    Let \( (X, d) \) be a metric space, \( A \subseteq X \), and \( x_0 \in X \).\\ 
-    We say that \( x_0 \) is a cluster point of \( A \) in \( (X, d) \) if 
-    \( x_0 \in \overline{A\setminus \{x_0\}} \).
-\end{Definition}
 
-\begin{Proposition}
-    \hfill\newline
-    \( x_0 \) is a cluster point of \( A \) iff there exists a sequence 
-    \( (x_k)_{k\in \mathbb{N}} \) in \( A \) such that 
-    \(\lim_{k\to \infty} x_k = x_0\) and \( x_k \neq x_0 \) for all \( k \in \mathbb{N} \).
-\end{Proposition}
 
 \begin{Definition}[Limit of function value]
     Let \( (X, d_X) \) and \( (Y, d_Y) \) be two metric spaces, \( A \subseteq X \), \( x_0\) be a 
@@ -698,6 +840,194 @@ By Rolle's Theorem, it follows that
 
 \clearpage
 \section{Riemann-Stieltjes integral}
+Riemann-Stieltjes integral generalizes the Riemann integral by introducing a
+weighting function \( \alpha \). The standard width in the Riemann integral 
+\(\Delta x_i = x_i - x_{i-1}\) is replaced by \( \Delta \alpha_i = \alpha(x_i) - \alpha(x_{i-1}) \).
+
+This has lots of (physical) implications. For example, \(\alpha\) can be a 
+cumulative distribution function of a random variable, and then the Riemann-Stieltjes integral of a function \( f \) with respect to \( \alpha \)
+becomes the expectation.
+
+In fact, it is a reformulation of what we usually write as
+\( \int f(x) \rho(x) dx \) in physics or probability.
+
+We first gives definition of the Riemann-Stieltjes integral,
+then we clarify the keep intuition behind it.
+\begin{Definition}[Partition]
+    Let \( a, b \in \mathbb{R} \) such that \( a < b \).
+    We call partition of \([a,b]\) a finite set 
+    \( \{x_0, x_1, \ldots, x_n\} \), where \( n \in \mathbb{N} \), 
+    of elements in \([a,b]\) such that \( a = x_0 \leq x_1 \leq \cdots \leq x_n = b \).
+\end{Definition}
+
+\begin{Definition}[Riemann-Stieltjes integrals]
+    Let \( \alpha, f: [a,b] \to \mathbb{R} \) be such that \( \alpha \) 
+    is increasing on \([a,b]\) and \( f \) is bounded on \([a,b]\).
+    For every partition \( P = (x_0, x_1, \ldots, x_n) \) of \([a,b]\), we define 
+    \begin{align}
+        L(P, f, \alpha) = \sum_{i=1}^{n}m_i\Delta \alpha_i,\quad 
+        U(P, f, \alpha) = \sum_{i=1}^{n}M_i\Delta \alpha_i
+    \end{align}
+    where \( \Delta \alpha_i  = \alpha(x_i) - \alpha(x_{i-1}) \),
+    \(m_i = \inf_{x \in [x_{i-1}, x_i]}f(x)\) and \( M_i = \sup_{x \in [x_{i-1}, x_i]}f(x) \).
+    We then define 
+    \begin{align}
+        \underline{\int_{a}^{b}}fd\alpha = \sup_{P}L(P, f, \alpha),\quad 
+        \overline{\int_{a}^{b}}fd\alpha = \inf_{P}U(P, f, \alpha)
+    \end{align}
+    they are called the \textbf{lower and upper Riemann-Stieltjes integrals} of \( f \) with respect to \( \alpha \) on \([a,b]\) respectively.
+
+    If \( \underline{\int_{a}^{b}}fd\alpha = \overline{\int_{a}^{b}}fd\alpha \), then 
+    we denote \(\int_{a}^{b}fd\alpha = \underline{\int_{a}^{b}}fd\alpha = \overline{\int_{a}^{b}}fd\alpha \)
+    and we say that \( f \) is \textbf{Riemann-Stieltjes integrable} with respect to \( \alpha \) on \([a,b]\),
+    and \( \int_{a}^{b}fd\alpha \) is called the Riemann-Stieltjes integral of \( f \) with respect to \( \alpha \) on \([a,b]\).
+
+    We denote by \( \mathcal{R}([a,b], \alpha) \) the set of all bounded functions
+    \( f: [a,b] \to \mathbb{R} \) which are Riemann-Stieltjes integrable with respect to \( \alpha \) on \([a,b]\).
+
+    In the case when \(\alpha(x) = x\), we say Riemann integral instead of Riemann-Stieltjes integral 
+    and we write \( \int_{a}^{b}f = \int_{a}^{b}fd\alpha \),
+    \( L(P,f) = L(P,f,\alpha) \), \(\mathcal{R}([a,b]) = \mathcal{R}([a,b], \alpha) \) and so on.
+\end{Definition}
+\marginnote{
+\begin{Remark}
+    \( \alpha \) is bounded on \([a,b] \) since \( \alpha(a) \leq \alpha(x) \leq \alpha(b)\; \forall x \in [a,b] \) and \( \alpha(a), \alpha(b) \in \mathbb{R} \).
+\end{Remark}
+}
+We note that we have:
+\begin{align}
+    \left(
+        \inf_{a \leq x \leq b} f(x)
+    \right)
+    \left(
+        \alpha(b) - \alpha(a)
+    \right)
+    &=
+    \left(
+        \inf_{a \leq x \leq b} f(x)
+    \right)\sum_{i=1}^{m}\Delta \alpha_i\\
+    &\leq L(P, f, \alpha) \leq U(P, f, \alpha)\\
+    &\leq 
+    \left(\sup_{a \leq x \leq b} f(x)
+    \right)\left(
+        \alpha(b) - \alpha(a)
+    \right)
+\end{align}
+since \(\inf_{a \leq x \leq b} f(x) \leq m_i \leq M_i \leq \sup_{a \leq x \leq b} f(x) \) and 
+\( \Delta \alpha_i \geq 0 \), hence, 
+\begin{align}
+    \left(
+        \inf_{a \leq x \leq b} f(x)
+    \right)
+    \left(
+        \alpha(b) - \alpha(a)
+    \right)
+    &\leq \underline{\int_{a}^{b}}fd\alpha 
+    \leq \overline{\int_{a}^{b}}fd\alpha 
+    \leq 
+    \left(\sup_{a \leq x \leq b} f(x)
+    \right)\left(
+        \alpha(b) - \alpha(a)
+    \right)
+\end{align}
+
+Unlike the Riemann integral, the Riemann-Stieltjes integral 
+is constructed through sets argument with inf/sup instead of sequences argument with limits.
+The core of the construction is built on the sets of partitions, which then gives
+sets of lower and upper sums. 
+Instead of taking limits of \(n \to \infty\) in the Riemann integral, we 
+take the supremum and infimum over the sets of partitions in the Riemann-Stieltjes integral.
+
+Here, we highlight that taking inf/sup works like taking a generalized limit (but on a set).
+(Definition of Inf/sup and the process of taking them naturally inherits (wraps/encapsulates) 
+the epsilon-delta style of arguments in the sequential limit).
+Moreover, these set arguments are built on the technical tools of refinement.
+Refinement is like moving forward toward the direction of limit, 
+(increasing \( n \) when \(n\to \infty\)). 
+We will see how it works in the proof of the following propositions and the 
+integrability criterion.
+\begin{Definition}[Refinement]
+    We say that a partition \(P^* \) of \( [a,b] \) is a refinement 
+    of a partition \( P \) of \( [a,b] \) if \( P^* \supseteq P \).
+    Given two partitions \( P_1 \) and \( P_2 \) of \( [a,b] \), 
+    we say that  \(P_1 \cup P_2 \) is a common refinement of \( P_1 \) and \( P_2 \).
+\end{Definition}
+The inclusion \( P^* \supseteq P \) works like the inequality \( N \geq N_0 \) in the sequential limit.
+Taking the common refinement of two partitions is like taking the \( N = \max(N_1,N_2) \)
+in the epsilon-delta style of arguments in the sequential limit.
+
+\begin{Proposition}
+    If \( P^* \) is a refinement of \( P \), then 
+    \begin{align}
+        L(P,f,\alpha) \leq L(P^*, f, \alpha) \text{ and } U(P^*, f, \alpha) \leq U(P, f, \alpha)
+    \end{align}
+\end{Proposition}
+Proof: We prove the results in the case where \( P^* \) contain one more point 
+\( x^* \) than \( P \) (the general case then follows by induction).
+
+Assume that \( x^* \in (x_{i-1}, x_i) \) where \( (x_{i-1}, x_i) \) are
+consecutive points of \( P \). Then
+\begin{align}
+    L(P^*, f, \alpha) - L(P, f, \alpha) 
+    &= 
+    m_i^* \Delta \alpha_i^* + m_{i+1}^* \Delta \alpha_{i+1}^* - m_i \Delta \alpha_i
+\end{align}
+where \( m_i^* = \inf_{x \in [x_{i-1}, x^*]}f(x) \), \( m_{i+1}^* = \inf_{x \in [x^*, x_i]}f(x) \),
+\( \Delta \alpha_i^* = \alpha(x^*) - \alpha(x_{i-1}) \) and \( \Delta \alpha_{i+1}^* = \alpha(x_i) - \alpha(x^*) \).
+
+Since \([x_{i-1}, x^*] \subseteq [x_{i-1}, x_i] \) and \( [x^*, x_i] \subseteq [x_{i-1}, x_i] \), we have
+\begin{align}
+    m_i \leq m_i^*, \; m_i \leq m_{i+1}^*
+\end{align}
+Moreover, since \( \alpha \) is increasing, we have \( 
+\Delta \alpha_i^*, \Delta \alpha_{i+1}^* \geq 0 \) (so \( m_i \Delta \alpha_i^* \leq m_i^* \Delta \alpha_i^* \)).
+
+Therefore, we obtain 
+\begin{align}
+    L(P^*, f, \alpha) - L(P, f, \alpha) 
+    &\geq m_i(\Delta \alpha_i^* + \Delta \alpha_{i+1}^* - \Delta \alpha_i)=0
+\end{align}
+Thus, \( L(P^*, f, \alpha) \geq L(P, f, \alpha) \), and similarly, we can obtain 
+\( U(P^*, f, \alpha) \leq U(P, f, \alpha) \).
+\hfill\qedsymbol
+
+
+\begin{Proposition}
+    \( 
+        \underline{\int_{a}^{b}}fd\alpha \leq \overline{
+            \int_a^b
+        }fd\alpha 
+    \)
+\end{Proposition}
+Proof: \( \forall P_1, P_2 \) partitions of \([a,b]\), let \(P^* =  P_1 \cup P_2 \) be a common
+refinement of \( P_1 \) and \( P_2 \). Then by the previous proposition,
+\begin{align}
+    L(P_1, f, \alpha) \leq L(P^*, f, \alpha) \leq U(P^*, f, \alpha) \leq U(P_2, f, \alpha)
+\end{align}
+where the middle inequality follows from infimum is less than or equal to supremum.
+
+Hence, \(
+        \underline{\int_{a}^{b}}fd\alpha \leq \overline{
+            \int_a^b
+        }fd\alpha \) 
+        follows by taking 
+the supremum over \( P_1 \) and the infimum over \( P_2 \).
+
+\marginnote{
+    The idea here is like taking \(N = \max(N_1, N_2)\) in the sequential limit,
+    where we can find a common ansestor \( N \) at which an inequality works for both \( N_1 \) and \( N_2 \).
+}
+(Here, taking the inf/sup is like taking the limit.)
+
+\hfill\qedsymbol
+
+Indeed, the refinement gives control on the approximation of the lower and upper sums to the integral.
+In the above proposition, we show the gap between the lower and upper integrals is always exists by inserting common refinement
+in the middle.
+In turn, 
+we can also bound the error in the approximation (gap in refinement) 
+by controlling the outside gap between the lower and upper sums on previous partitions.
+
 \begin{Proposition}
     \( f \in \mathcal{R}([a,b], \alpha) \) iff \( 
     \forall \varepsilon>0 \), \(\exists P_\varepsilon\) (partition of 
@@ -708,9 +1038,9 @@ Then by properties of \( inf \) and \( sup \), \(\forall \varepsilon>0\),
 \(\exists P_\varepsilon, P'_\varepsilon\) partition 
 of \([a,b]\) such that
 \begin{align}
-    \underline{\int_{a}^b} f(x)d\alpha  - \varepsilon < L(P_\varepsilon, f, \alpha) 
+    \underline{\int_{a}^b} f(x)d\alpha  - \frac12\varepsilon < L(P_\varepsilon, f, \alpha) 
     = \underline{\int_{a}^b} f(x)d\alpha \leq \overline{\int_{a}^b} f(x)d\alpha
-    \leq U(P_\varepsilon, f, \alpha) < \overline{\int_{a}^b} f(x)d\alpha + \varepsilon
+    \leq U(P_\varepsilon, f, \alpha) < \overline{\int_{a}^b} f(x)d\alpha + \frac12\varepsilon
 \end{align}
 Let \( P_\varepsilon^* = P_\varepsilon \cup P'_\varepsilon \).
 Then since \( P_\varepsilon^* \supset P_\varepsilon \) 
@@ -726,6 +1056,10 @@ where \(
 \overline{\int_{a}^b} f(x) d\alpha - \underline{\int_{a}^b} f(x)d\alpha =0
  \)
 since \( f \in \mathcal{R}([a,b], \alpha) \).
+\marginnote{
+    Thus, the gap on a further refinement (like larger \( n \) in sequential proof) is less than the 
+    gap on the previous partitions.
+}
 
 \noindent (\(\Leftarrow\)) 
 Assume that \(\forall \varepsilon>0\), 
@@ -751,7 +1085,7 @@ therefore \( f \in \mathcal{R}([a,b], \alpha) \).
     Look at Question 2 in Assignment 6.
 }
 
-\begin{Proposition}
+\begin{Theorem}[Riemann-Stieltjes integrability]
     Let \( f, \alpha [a,b] \to \mathbb{R} \) 
     be such that \( f \) is bounded in \([a,b]\)
     and \( \alpha \) increasing on \([a,b]\).
@@ -760,7 +1094,13 @@ therefore \( f \in \mathcal{R}([a,b], \alpha) \).
     not continuous. Assume that \( D \) is countable
     and that \( \alpha \) is continuous at every point in \( D \).
     Then \( f \in \mathcal{R}([a,b], \alpha) \).
-\end{Proposition}
+\end{Theorem}
+\marginnote{
+    Continuous functions are always Riemann-Stieltjes integrable.
+    If the function is not continuous, if 
+    the set of discontinuity points is countable, and 
+    if \( \alpha \) is continuous at every discontinuity point, then the function is also Riemann-Stieltjes integrable.
+}
 Let \(\varepsilon>0\). For every \( x \in [a,b]\setminus D\), 
 since \( f \) is continuous at \( x \), there exists 
 \(\delta_x > 0 \) such that \( |f(y) - f(x)| < c\varepsilon \) for all \( y \in (x-\delta_x, x+\delta_x) \cap [a,b] \),
@@ -789,36 +1129,525 @@ such that
     [a,b] \subset \bigcup_{i=1}^{N_\varepsilon}(y_i - \delta_{y_i}, y_i + \delta_{y_i})
 \end{align}
 By ordering the points 
-\(a,b,y_i-\delta_{\varepsilon, y} (\text{ if } \geq 0)\), 
+\(a,b,y_i-\delta_{\varepsilon, y} (\text{ if } \geq a)\), 
 and \(y_i+\delta_{\varepsilon, y} (\text{ if } \leq b)\),
 we then obtain a partition \( P_\varepsilon = \{x_0, \cdots, x_{m_\varepsilon}\} \)
 such that  \(\forall j \in \{0, \cdots, m_\varepsilon\}\),
-\(\exists i \in \{1, \cdots, N_\varepsilon\}\) such 
-that \( (x_{j-1}, x_j) \subset (y_i - \delta_{y_i}, y_i + \delta_{y_i})\cap [a,b] \).
+\(\exists i_j \in \{1, \cdots, N_\varepsilon\}\) such 
+that \( (x_{j-1}, x_j) \subset (y_{i_j} - \delta_{y_{i_j}}, y_{i_j} + \delta_{y_{i_j}})\cap [a,b] \).
+\marginnote{
+    Important trick here. And \(i_j\) is not a subsequence here, but a function that maps 
+    the paritition index \( j \) to the index of the subcover \( i_j \).
+}
 
-We again separate this into two cases (depending on whether \( y_i \in D \) or not):
+We again separate this into two cases (depending on whether \( y_{i_j} \in D \) or not):
 \begin{itemize}
-    \item If \( y_i \not\in D\), then 
+    \item If \( y_{i_j} \not\in D\), then 
     \begin{align}
     M_j - m_j &= \sup_{x \in [x_{j-1}, x_j]}f(x) - \inf_{x \in [x_{j-1}, x_j]}f(x)\\
     &\leq \left(
-    \sup_{x \in [x_{j-1}, x_j]}f(x) - f(y_i)\right) + \left(f(y_i) - \inf_{x \in [x_{j-1}, x_j]}f(x)\right)\\
+    \sup_{x \in [x_{j-1}, x_j]}f(x) - f(y_{i_j})\right) + \left(f(y_{i_j}) - \inf_{x \in [x_{j-1}, x_j]}f(x)\right)\\
     &< 2c\varepsilon
     \end{align}
-    \item If \( y_i \in D \), then we have
+    \item If \( y_{i_j} \in D \), then we have
     \begin{align}
-    M_j - m_j \leq M-m &= \sup_{x \in [x_{j-1}, x_j]}f(x) - \inf_{x \in [x_{j-1}, x_j]}f(x) 
+    M_j - m_j \leq M-m &= \sup_{x \in [a,b]}f(x) - \inf_{x \in [a,b]}f(x) 
     \\
-    \Delta \alpha_j = \alpha(x_j) - \alpha(x_{j-1}) &\leq |\alpha(x_j) - \alpha(y_i)| + |\alpha(y_i) - \alpha(x_{j-1})|\\
+    \Delta \alpha_j = \alpha(x_j) - \alpha(x_{j-1}) &\leq |\alpha(x_j) - \alpha(y_{i_j})| + |\alpha(y_{i_j}) - \alpha(x_{j-1})|\\
      &< 2c_k\varepsilon
     \end{align}
 \end{itemize}
+\marginnote{
+    In the discontinuous regime, we have no control on the gap \( M_j - m_j \),
+    however, we can use the continuity of \( \alpha \) to control the gap \( \Delta \alpha_j \).
+}
 Therefore, \begin{align}
     U(P_\varepsilon, f, \alpha) - L(P_\varepsilon, f, \alpha)
     &= \sum_{j=1}^{m_\varepsilon}(M_j - m_j)\Delta \alpha_j\\
     &= \sum_{j=1, y_{i_j} \in D}^{m_\varepsilon}(M_j - m_j)\Delta \alpha_j + \sum_{j=1, y_{i_j} \not\in D}^{m_\varepsilon}(M_j - m_j)\Delta \alpha_j\\
-    &\leq 2c\varepsilon \underbrace{\sum_{j=1, y_{i_j} \not\in D}^{m_\varepsilon}\Delta \alpha_j}_{ss} + (M-m)\sum_{j=1, y_{i_j} \in D}^{m_\varepsilon}\Delta \alpha_j\\
+    &\leq 2c\varepsilon \underbrace{\sum_{j=1, y_{i_j} \not\in D}^{m_\varepsilon}\Delta \alpha_j}_{\leq \sum_{j=1}^{m_\varepsilon}\Delta \alpha_j = \alpha(b) - \alpha(a)} + 
+    (M-m) \underbrace{ \sum_{j=1, y_{i_j} \in D}^{m_\varepsilon}\Delta \alpha_j }_{\leq 2\varepsilon\sum_{k=1}^{\infty}c_k}
 \end{align}
+the second inequality comes from the fact that \( D = \{d_k : k\in \mathbb{N}\} \) and \(\Delta \alpha_j < 2c_k\varepsilon \) when \( y_{i_j} = d_k \).
+\marginnote{
+    (Ask in Office Hour)
+}
+
+Therefore, if we choose \( c = \frac{1}{4(\alpha(b) - \alpha(a))} \) and \( c_k = \frac{1}{4(M-m)2^k} \) (if \( m < M \)),
+so that \( 2(M-m)\sum_{k=1}^{\infty}c_k = \frac{1}{2} \),
+then we have
+\begin{align}
+    U(P_\varepsilon, f, \alpha) - L(P_\varepsilon, f, \alpha) < \frac{1}{2}\varepsilon + \frac{1}{2}\varepsilon = \varepsilon
+\end{align}
+Since this is true for all \( \varepsilon > 0 \), it follows that \( f \in \mathcal{R}([a,b], \alpha) \).
+\hfill\qedsymbol
+One of the critical part of the proof is to create a shrinking \(c_k\) to control error on infinitely many 
+discontinuity points.
+
+\begin{Proposition}
+    Let \( I \) be an interval in \( \mathbb{R} \) and \( f: I \to \mathbb{R} \) be 
+    monotone on \( I \) and \( D \) be the set of points at which 
+    \( f \) is not continuous, then \( D \) is countable.
+\end{Proposition}
+\marginnote{
+    This shows that the countable discontinuity condition 
+    in the previous theorem is automatically satisfied for monotone functions.
+    \begin{Remark}
+        If \( \alpha \) is continuous, then every monotone functino is Riemann-Stieltjes integrable with respect to \( \alpha \).
+    \end{Remark}
+}
+Proof: Assuming that \( f \) is increasing (otherwise
+we can consider \( -f \)). For each \( x \in D \),
+we have that \( \lim_{t\to x^-}f(t) \) and \( \lim_{t\to x^+}f(t) \) exist 
+since \( f \) is increasing. Moreover, 
+\begin{align}
+    \lim_{t\to x^-}f(t)  < \lim_{t\to x^+}f(t)
+\end{align}
+since \( x\in D \). By density of \( \mathbb{Q} \),
+it follows that \( \exists q_x \in \mathbb{Q} \)
+such that 
+\begin{align}
+    \lim_{t\to x^-}f(t) < q_x < \lim_{t\to x^+}f(t)
+\end{align}
+Moreover, since \( f \) is increasing, if \( x < y \),
+then 
+\begin{align}
+    q_x \leq \lim_{t\to x^+}f(t) \leq \lim_{t\to y^-}f(t) < q_y
+\end{align}
+Therefore, the map (\( D \to \mathbb{Q} \)) \( x\mapsto q_x \) is 
+injective. Since \( \mathbb{Q} \) is countable, \( D \) is countable.
+\hfill\qedsymbol
+
+\begin{Proposition}[Integrability of composition]
+    Let \( a,b,c,d \in \mathbb{R} \) be such that \( a<b, c<d \), 
+    \( \alpha: [a,b] \to \mathbb{R} \) be increasing, and \( f: [a,b] \to [c,d] \)
+    and \( \Phi: [c,d] \to \mathbb{R} \). If 
+    \( f \in \mathcal{R}([a,b], \alpha) \) and \( \Phi \) is continuous, then
+    \( \Phi \circ f \in \mathcal{R}([a,b], \alpha) \).
+\end{Proposition}
+\marginnote{
+    Implication: if we have a function \( f \) that is Riemann-Stieltjes integrable, 
+    is the absolute value, or power of \( f \) also Riemann-Stieltjes integrable?
+}
+Proof: Since \( [c,d] \) is compact and \( \Phi \)
+continuous on \( [c,d] \), we obtain that 
+\( \Phi \) is uniformly continuous on \( [c,d] \). 
+Thus, \(\forall \varepsilon > 0\), \(\exists \delta_\varepsilon > 0\) 
+such that \(\forall x,y\in [c,d]\), 
+\begin{align}
+    |x-y| < \delta_\varepsilon \implies |\Phi(x) - \Phi(y)| < \lambda\varepsilon
+\end{align}
+where the constant \( \lambda > 0 \) will be determined later.
+\marginnote{
+    The trick is to keep a constant \( \lambda \) like the proof before.
+}
+
+On the other hand,  since \( f \in \mathcal{R}([a,b], \alpha) \),
+\(\exists P_\varepsilon \) partition of \([a,b]\) such that
+\begin{align}
+    U(P_\varepsilon, f, \alpha) - L(P_\varepsilon, f, \alpha) 
+    = \sum_{i=1}^{n} (M_i - m_i) \Delta \alpha_i < \lambda_\varepsilon
+\end{align}
+where the constant \( \lambda_\varepsilon > 0 \) will be determined later.
+\marginnote{
+    Recall that \( M_i = \sup_{x \in [x_{i-1}, x_i]}f(x) \) and \( m_i = \inf_{x \in [x_{i-1}, x_i]}f(x) \).
+}
+We want to show that 
+\begin{align}
+ U(P_\varepsilon, \Phi \circ f, \alpha) - L(P_\varepsilon, \Phi \circ f, \alpha) 
+ = \sum_{i=1}^{n} (M'_i - m'_i) \Delta \alpha_i < \varepsilon
+\end{align}
+and we need to estimate the term product \( (M'_i - m'_i) \Delta \alpha_i \) for each \( i \in \{1, \cdots, n\} \).
+
+For all \( i \in \{1, \cdots, n\} \), we have
+\begin{align}
+    M_i' - m_i' \leq \begin{cases}
+    \lambda\varepsilon & \text{if } M_i - m_i < \delta_\varepsilon\\
+    M-m & \text{if } M_i - m_i \geq \delta_\varepsilon
+    \end{cases}
+\end{align}
+\marginnote{
+    In the first case, as soon as we have one \( \varepsilon \) in the product term, it 
+    will be small.
+    In the second case, we can only say that \( M_i' - m_i' \) 
+    is bounded, but fortunately, we have control on the other term \( \Delta \alpha_i \).
+}
+where \( M = \sup_{x \in [c,d]}\Phi(x) \) and \( m = \inf_{x \in [c,d]}\Phi(x) \).
+This gives:
+\begin{align}
+    \sum_{i=1}^{n}(M_i' - m_i')\Delta \alpha_i 
+    \leq \underbrace{\lambda\varepsilon \sum_{i=1,M_i - m_i < \delta_\varepsilon}^{n}\Delta \alpha_i}_{
+        \leq \lambda\varepsilon (\alpha(b) - \alpha(a))
+    }
+    + (M-m)\sum_{i=1, M_i - m_i \geq \delta_\varepsilon}^{n}\Delta \alpha_i
+\end{align}
+The first term is easy to control, the second term is tricker.
+But we haven't use the Riemann-Stieltjes integrability of \( f \) yet.
+We have:
+\begin{align}
+    (M-m)\sum_{i=1, M_i - m_i \geq \delta_\varepsilon}^{n}\Delta \alpha_i
+    &\leq (M-m)\sum_{i=1, M_i - m_i \geq \delta_\varepsilon}^{n}\frac{M_i - m_i}{\delta_\varepsilon} \Delta \alpha_i
+\end{align}
+Since \(  M_i - m_i \geq \delta_\varepsilon\).
+\marginnote{
+    We introduce the term \( \frac{M_i - m_i}{\delta_\varepsilon} \) so that we can use the 
+    fact that \( \sum_{i=1}^{n}(M_i - m_i)\Delta \alpha_i < \lambda_\varepsilon \)
+    from the integrability.
+}
+Since \( \sum_{i=1}^{n}(M_i - m_i)\Delta \alpha_i < \lambda_\varepsilon \), we have
+\begin{align}
+    (M-m)\sum_{i=1, M_i - m_i \geq \delta_\varepsilon}^{n}\Delta \alpha_i
+    &\leq \frac{M-m}{\delta_\varepsilon} \sum_{i=1}^{n}(M_i - m_i)\Delta \alpha_i < \frac{M-m}{\delta_\varepsilon} \lambda_\varepsilon
+\end{align}
+
+Now, choosing \( \lambda = \frac{1}{2(\alpha(b) - \alpha(a))} \) and \( \lambda_\varepsilon = \frac{\delta_\varepsilon\varepsilon}{2(M-m)} \), we have
+\begin{align}
+    \sum_{i=1}^{n}(M_i' - m_i')\Delta \alpha_i \leq \frac{1}{2}\varepsilon + \frac{1}{2}\varepsilon = \varepsilon
+\end{align}
+\hfill \qedsymbol
+
+\begin{Proposition}
+    Let \( a, b \in \mathbb{R} \) be such that \( a<b \)
+    and \( \alpha: [a,b]\to \mathbb{R} \).
+    \begin{enumerate}
+        \item \(\forall f,g \in \mathcal{R}([a,b], \alpha)\), \( f+g \in \mathcal{R}([a,b], \alpha) \)\\
+        and 
+        \begin{align}
+            \int_{a}^b (f+g)d\alpha = \int_{a}^b fd\alpha + \int_{a}^b gd\alpha
+        \end{align}
+        \item \(\forall \lambda \in \mathbb{R}, f \in \mathcal{R}([a,b], \alpha)\),
+        we have \( \lambda f \in \mathcal{R}([a,b], \alpha) \) and\\
+        \begin{align}
+            \int_{a}^b \lambda f d\alpha = \lambda \int_{a}^b fd\alpha
+        \end{align}
+        \item \(\forall f,g \in \mathcal{R}([a,b], \alpha)\) such that \( f(x) \leq g(x) \) on \( [a,b] \)
+        implies that 
+        \begin{align}
+            \int_{a}^b fd\alpha \leq \int_{a}^b gd\alpha
+        \end{align}
+        \item \(\forall f \in \mathcal{R}([a,b], \alpha)\), \( |f| \in \mathcal{R}([a,b], \alpha) \) and
+        \begin{align}
+            \left|\int_{a}^b fd\alpha\right| \leq \int_{a}^b |f|d\alpha
+        \end{align}
+        \item \(\forall f,g \in \mathcal{R}([a,b], \alpha)\),
+        \( fg \in \mathcal{R}([a,b], \alpha) \) (but we don't have a simple formula for \( \int_{a}^b fg d\alpha \)).
+        \item \(\forall f \in \mathcal{R}([a,b], \alpha)\), \( c \in (a,b) \) 
+        we have 
+        \begin{align}
+            \int_{a}^b fd\alpha = \int_{a}^c fd\alpha + \int_{c}^b fd\alpha
+        \end{align}
+    \end{enumerate}
+\end{Proposition}
+
+Proof: 
+(1.)
+\( \forall P, P' \) partition of \([a,b]\), letting 
+\( P^* = P \cup P' \), we have
+\begin{align}
+    \overline{\int_{a}^{b}}(f+g)d\alpha &\leq U(P^*, f+g, \alpha)\\
+    \intertext{since \( \sup(f+g)\leq \sup f + \sup g \)}
+    &\leq U(P^*, f, \alpha) + U(P^*, g, \alpha)
+\end{align}
+By taking the infimum over \( P \) and \( P' \), we have
+\begin{align}
+    \overline{\int_{a}^{b}}(f+g)d\alpha &\leq \overline{\int_{a}^{b}}fd\alpha + \overline{\int_{a}^{b}}gd\alpha\\
+    &= \int_{a}^{b} fd\alpha + \int_{a}^{b} gd\alpha \qquad (f,g \in \mathcal{R}([a,b], \alpha))
+\end{align}
+Similarly, we can show that
+\begin{align}
+    \underline{\int_{a}^{b}}(f+g)d\alpha &\geq \int_{a}^{b} fd\alpha + \int_{a}^{b} gd\alpha
+\end{align}
+Therefore, 
+\begin{align}
+    \int_{a}^{b}f d\alpha + \int_{a}^{b} gd\alpha \leq \underline{\int_{a}^{b}}(f+g)d\alpha \leq \overline{\int_{a}^{b}}(f+g)d\alpha \leq \int_{a}^{b} fd\alpha + \int_{a}^{b} gd\alpha
+\end{align}
+hence \( f+g \in \mathcal{R}([a,b], \alpha) \) and
+\begin{align}
+    \int_{a}^{b}(f+g)d\alpha = \int_{a}^{b} fd\alpha + \int_{a}^{b} gd\alpha
+\end{align}
+
+(2.) follows from 
+\begin{align}
+        \sup(\lambda f) = \lambda \sup f \text{ and } \inf(\lambda f) 
+        = \lambda \inf f & \text{if } \lambda \geq 0
+\end{align}
+and \( \sup(-f) = -\inf(f) \), \( \inf(-f) = -\sup(f) \).
+This gives 
+\begin{align}
+    U(P, -f, \alpha) = -L(P, f, \alpha) \text{ and } L(P, -f, \alpha) = -U(P, f, \alpha)\\
+    \overline{\int_{a}^{b}}(-f)d\alpha = -\underline{\int_{a}^{b}}fd\alpha 
+    \text{ and } \underline{\int_{a}^{b}}(-f)d\alpha = -\overline{\int_{a}^{b}}fd\alpha
+\end{align}
+
+(3.) follows from \( f\leq g \implies \begin{cases}
+    \sup f \leq \sup g\\
+    \inf f \leq \inf g
+\end{cases} \).
+
+(4.) follows from absolute function is continuous, so
+\( |f| \) is Riemann-Stieltjes integrable. 
+We apply (2. \& 3.) with \(-|f| \leq f \leq |f| \) to obtain the desired inequality.
+\marginnote{We have to use two side inequality to bound absolute value.}
+
+(5.) Obverse that \( fg = \frac{1}{2}((f+g)^2 - f^2 - g^2) \). 
+Using (1, 2) and the fact that \(x\mapsto x^2\) is continuous.
+
+(6.) Assignment 6.
+\hfill \qedsymbol
+
+
+
+\begin{Proposition}
+    Let \( a,b \in \mathbb{R} \) such that \( a<b \)
+    and \(\alpha, \alpha_1, \alpha_2: [a,b] \to \mathbb{R} \)
+    be increasing on \([a,b]\). Then:
+    \begin{enumerate}
+        \item \( \forall f \in \mathcal{R}([a,b], \alpha_1) \cap \mathcal{R}([a,b], \alpha_2) \),
+        \( f \in \mathcal{R}([a,b], \alpha_1 + \alpha_2) \) and
+        \begin{align}
+            \int_{a}^b fd(\alpha_1 + \alpha_2) = \int_{a}^b fd\alpha_1 + \int_{a}^b fd\alpha_2
+        \end{align}
+        \item \( \forall f \in \mathcal{R}([a,b], \alpha) \), \(\lambda \in (0,\infty)\), 
+        \( f \in \mathcal{R}([a,b], \lambda \alpha) \) and
+        \begin{align}
+            \int_{a}^b fd(\lambda \alpha) = \lambda \int_{a}^b fd\alpha
+        \end{align}
+    \end{enumerate}
+\end{Proposition}
+
+
+\begin{Theorem}
+    Let \( a,b \in \mathbb{R} \) be such that \( a<b \) and 
+    \(f\in \mathcal{R}([a,b])\). Then the function \( F: [a,b] \to \mathbb{R} \) defined 
+    by \( F(x) = \int_{a}^x f , \; \forall x \in [a,b] \) is 
+    lipchitz continuous on \([a,b]\). Moreover, 
+    if \( f \) is continuous at \( x_0 \in [a,b] \), then \( F \) is differentiable at \( x_0 \) and
+    \begin{align}
+        F'(x_0) = f(x_0)
+    \end{align}
+\end{Theorem}
+\marginnote{
+    Integrability guarantees Lipschitz continuity and continuity guarantees differentiability.
+}
+Proof: \( \forall x,y \in [a,b] \), 
+\begin{align}
+|F(x) - F(y)| &\leq |\int_{a}^{y}f - \int_{a}^{x}f| =|\int_{x}^{y}f| \\
+&\leq \int_{x}^{y} |f| \leq \left(\sup_{t \in [a,b]}|f(t)|\right) |y-x|
+\end{align}
+Thus \( F \) is Lipschitz continuous on \([a,b]\).
+
+If \( f \) is continuous at \( x_0 \), then for all \( \varepsilon > 0 \), 
+\(\exists \delta_\varepsilon > 0 \) such that
+for all \( x \in [a,b]\), we have 
+\begin{align}
+    |f(x) - f(x_0)| < \varepsilon \text{ whenever } |x-x_0| < \delta_\varepsilon
+\end{align}
+hence for every \(t \in (-\delta_\varepsilon, \delta_\varepsilon) \setminus \{0\}\) such that \( x_0 + t \in [a,b] \), we have
+\begin{align}
+    \left|\frac{1}{t}\left(F(x_0 + t) - F(x_0)\right) - f(x_0)\right| &=
+    \left|\frac{1}{t}\left(\int_{x_0}^{x_0+t}f\right) - \frac{1}{t}\int_{x_0}^{x_0+t}f(x_0)\right| \\
+    &= \left|\frac{1}{t}\int_{x_0}^{x_0+t}(f(s) - f(x_0))ds\right| \\
+    &\leq \frac{1}{|t|}\int_{x_0}^{x_0+t}|f(s) - f(x_0)|ds \\
+    &\leq \frac{1}{|t|}\int_{x_0}^{x_0+t}\varepsilon = \varepsilon
+\end{align}
+where \(\int_{x_0}^{x_0+t} = -\int_{x_0+t}^{x_0}\) if \( t < 0 \).
+
+It follows that, 
+\begin{align}
+    \limsup_{t\to 0}\left|\frac{1}{t}\left(F(x_0 + t) - F(x_0)\right) - f(x_0)\right| \leq \varepsilon
+\end{align}
+Letting \( \varepsilon \to 0 \) (which is allowed since 
+limsup does not depends on \( t \)), we have
+\begin{align}
+    \lim_{t\to 0}\left|\frac{1}{t}\left(F(x_0 + t) - F(x_0)\right) - f(x_0)\right| = 0
+\end{align}
+\marginnote{This is how you bound things at a limit point.}
+i.e, \( F \) is differentiable at \( x_0 \) and \( F'(x_0) = f(x_0) \).
+\hfill \qedsymbol
+
+\begin{Theorem}[Fundamental theorem of calculus]
+    Let \( a,b \in \mathbb{R} \) be such that \( a<b \) and
+    \( F: [a,b] \to \mathbb{R} \) be such that \( F \) is continuous on 
+    \([a,b]\), differentiable on \( (a,b) \), and \( F' = f \in \mathcal{R}([a,b]) \).
+    Then
+    \begin{align}
+        \int_{a}^b f(x) = F(b) - F(a)
+    \end{align}
+\end{Theorem}
+
+\begin{Theorem}[Taylor's theorem with integral reminder]
+    Let \( x, x_0 \in \mathbb{R} \), \( x \neq x_0 \), 
+    \(I = \begin{cases}
+        [x_0, x] & \text{if } x > x_0\\
+        [x, x_0] & \text{if } x < x_0
+    \end{cases}\), 
+    \( \text{int}(I) = \begin{cases}
+        (x_0, x) & \text{if } x > x_0\\
+        (x, x_0) & \text{if } x < x_0
+    \end{cases} \) and \( f: I \to \mathbb{R} \) be 
+    n times continuously differentiable in \( I \) (i.e. 
+    \( f^{(n) } \) exists and is continuous in \( I \)),
+    \( n+1 \) times differentiable in \( \text{int}(I) \),
+    and \( t\mapsto f^{(n+1)}(t)(x-t)^n \in \mathcal{R}(I) \).
+
+    Then, 
+    \begin{align}
+        f(x) = \underbrace{\sum_{k=0}^{n}\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k}_{\text{partial sum of Taylor series at \( x_0 \)}} 
+        + \underbrace{\int_{x_0}^x\frac{f^{(n+1)}(t)}{n!}(x-t)^ndt}_{\text{integral reminder}}
+    \end{align}
+\end{Theorem}
+    \marginnote{
+        If \( f^{(n+1)}(t)(x-t)^n \) is not defined at the endpoints, 
+        we assume it equals some Riemann integrable function at the endpoints.
+    }
+Proof
+In the finite version of Taylor's theorem, 
+we introduce \( h(t) = g(t)(x-x_0)^{n+1}-g(x_0)(x-t)^{n+1} \)
+with \begin{align}
+    g(t) = f(x) - \sum_{k=0}^{n}\frac{f^{(k)}(t)}{k!}(t-t)^k
+\end{align}
+and we proved that \( h(x) = h(x_0) = 0 \) and 
+\begin{align}
+    h'(t) = (n+1)g(x_0)(x-t)^n - \frac{1}{n!} f^{(n+1)}(t)(x-t)^n(x-x_0)^{n+1}
+\end{align}
+From the assumption on \( f \), we have that \( h \)
+is continuous on \( I \), differentiable on \( \text{int}(I) \), and 
+\(h'(t) \in \mathcal{R}(I)\). By applying the Fundamental 
+Theorem of Calculus to \( h' \), we then obtain
+\begin{align}
+    0 = h(x) - h(x_0) = 
+    \int_{x_0}^x h'(t) dt &= \underbrace{g(x_0)(x-x_0)^{n+1}}_{=g(x_0)\left[-(x-t)^{n+1}
+    \right]_{x_0}^x} - \int_{x_0}^x\frac{f^{(n+1)}(t)}{n!}(x-t)^n(x-x_0)^{n+1}dt\\
+    &= (x-x_0)^{n+1} \left(g(x_0) - \int_{x_0}^x\frac{f^{(n+1)}(t)}{n!}(x-t)^ndt\right)
+\end{align}
+Hence
+\begin{align}
+    g(x_0) = f(x) - \sum_{k=0}^{n}\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k = \int_{x_0}^x\frac{f^{(n+1)}(t)}{n!}(x-t)^ndt
+\end{align}
+\hfill \qedsymbol
+
+\begin{Definition}[Riemann-Stieltjes integrable]
+    Let \( a \in \mathbb{R} \), \( b \in (a, \infty) \), 
+    or \( b=\infty \), and \( \alpha: [a,b)\to \mathbb{R} \)
+    be increasing. We say that \( f: [a,b) \to \mathbb{R} \) is
+    Riemann-Stieltjes integrable with respect to \( \alpha \) on \([a,b)\) if
+    \(f\in \mathcal{R}([a,s], \alpha) \) for all \( s \in (a,b) \) and the limit 
+    \begin{align}
+    \lim_{s\to b^-} \int_{a}^s fd\alpha
+    \end{align}
+    exists and if finite.
+    We denote 
+    \begin{align}
+    \int_{a}^{b}fd\alpha \left(\text{ or } \int_{a}^{b^-}fd\alpha  \text{ if } b < \infty  \right)
+    = \lim_{s\to b^-} \int_{a}^s fd\alpha
+    \end{align}
+    which we call R-S integral of \( f \) over \([a,b)\) with respect to \( \alpha \).
+
+    Similarly, for \( b \in \mathbb{R} \), \( a \in (-\infty, b) \) or \( a = -\infty \), and \( \alpha: (a,b] \to \mathbb{R} \) increasing,
+    we say that \( f: (a,b] \to \mathbb{R} \) is Riemann-Stieltjes integrable with respect to \( \alpha \) on \( (a,b] \) if \( f \in \mathcal{R}([s,b], \alpha) \) for all 
+    \( s \in (a,b) \) and the limit
+    \begin{align}
+    \lim_{s\to a} \int_{s}^b fd\alpha
+    \end{align}
+    exists and is finite. We denote
+    \begin{align}
+    \int_{a}^{b}fd\alpha \left(\text{ or } \int_{a^+}^{b}fd\alpha  \text{ if } a > -\infty  \right)
+    = \lim_{s\to a} \int_{s}^b fd\alpha
+    \end{align}
+    which we call R-S integral of \( f \) over \( (a,b] \) with respect to \( \alpha \).
+\end{Definition}
+
+
+\begin{Proposition}
+    Let \( a, b \in \mathbb{R} \) be such that \( a<b \),
+    \( \alpha: [a,b) \to \mathbb{R} \) be increasing,
+    and \( f\in \mathcal{R}([a,b), \alpha) \).
+    \begin{enumerate}
+        \item If \( \alpha \) is continuous at \( b \) then 
+        \begin{align}
+            \int_{a}^{b^-}fd\alpha = \int_{a}^b fd\alpha
+        \end{align}
+        \item If \( \alpha \) is continuous at \( a\), then 
+        \begin{align}
+            \int_{a^+}^{b}fd\alpha = \int_{a}^b fd\alpha
+        \end{align}
+    \end{enumerate}
+\end{Proposition}
+
+\marginnote{
+\begin{Remark}
+If \( \alpha \) is not continuous at \( a \) or \( b \), 
+then this is not true in general. For example, 
+if \( \alpha =0\) on \( [a,b) \) and \( \alpha(b) = 1 \), then
+\begin{align}
+    \int_{a}^{b} fd\alpha = 1 \text{ but } \int_{a}^{s} fd\alpha = 0 \text{ for all } s \in (a,b)
+\end{align}
+\end{Remark}
+}
+Proof: (1.) \(\forall (a,b) \in (a,b) \), we have
+\begin{align}
+    \left|
+        \int_{a}^{b}fd\alpha - \int_{a}^{s}fd\alpha 
+    \right| =
+    \left|
+    \int_{s}^{b}fd\alpha
+    \right| &\leq \sup_{x \in [s,b]}|f(x)| \int_{s}^{b}1d\alpha \\
+    &= \sup_{x \in [s,b]}|f(x)| (\alpha(b) - \alpha(s))
+\end{align}
+Since \( \alpha \) is continuous at \( b \), we obtain
+\( 
+    \lim_{s\to b}\alpha(s) = \alpha(b)
+ \), hence
+\begin{align}
+    \lim_{s\to b}\int_{a}^{s}fd\alpha = \int_{a}^{b}fd\alpha
+\end{align}
+(2.) is similar to (1.).
+\hfill \qedsymbol
+
+This allows us to define integral on functions
+ that are unbounded at the endpoints, e.g. power functions.
+\begin{Example}
+        \begin{align}
+            \int_{1}^{s}\frac{1}{x^p}dx = \begin{cases}
+                \ln s - \ln 1 = \ln s \to \infty & \text{if } p=1\\
+                \frac{1}{p-1}(1 - \frac{1}{s^{p-1}}) \to \begin{cases}
+                \frac{1}{p-1} & \text{if } p > 1\\
+                \infty & \text{if } p < 1
+                \end{cases}
+            \end{cases}
+        \end{align}
+        Hence, we have \( 
+        \begin{cases}
+            \int_{1}^{\infty}\frac{1}{x^p}dx = \infty & \text{if } p \leq 1\\
+            x \mapsto \frac{1}{x^p} \text{ is not Riemann integrable over } [1,\infty) & \text{if } p > 1
+        \end{cases}
+        \).
+\end{Example}
+
+In the example we use \( \frac{d}{dx}\ln x = \frac{1}{x} \) which we proved for 
+\(0<x<2\) where \( \ln(x) \) is a power series.
+Proof when \(0<x<\infty\):
+Observe that for all \( x,y \in (0,\infty) \), we have
+\( 
+    e^{\ln x + \ln y} = e^{\ln x}e^{\ln y} = xy
+ \)
+Hence, we have
+    \( 
+    \ln x + \ln y = \ln(xy)
+     \)
+and \(\ln x + \ln \frac1x = \ln 1 = 0\) so \( \ln \frac1x = -\ln x \).
+It follows that, for every \( x \in (0,\infty) \) and \( t \) sufficiently small (\(|\frac{t}{x}| < 1\)),
+\begin{align}
+    \frac{1}{t}\left(
+        \ln (x+t) - \ln x
+    \right) &= \frac{1}{t}\ln\left(1 + \frac{t}{x}\right) \\
+    &= \frac{1}{t} \sum_{k=1}^{\infty} \frac{(-1)^{k-1}}{k}\left(\frac{t}{x}\right)^k\\
+    &= \sum_{k=1}^{\infty} \frac{(-1)^{k-1}}{k}\left(\frac{t}{x}\right)^{k-1} 
+\end{align}
+which is continuous and converges to \( \frac{1}{x} \) at \( t=0 \).
+Hence, \( \ln x \) is differentiable at \( x \) and \( \frac{d}{dx}\ln x = \frac{1}{x} \).
+
+
 
 
 
